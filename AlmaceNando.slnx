@@ -1,0 +1,12 @@
+<Solution>
+  <Project Path="AlmaceNando.Data/AlmaceNando.Data.csproj">
+    <BuildDependency Project="AlmaceNando.Domain/AlmaceNando.Domain.csproj" />
+  </Project>
+  <Project Path="AlmaceNando.Domain/AlmaceNando.Domain.csproj" />
+  <Project Path="AlmaceNando.Logic/AlmaceNando.Logic.csproj">
+    <BuildDependency Project="AlmaceNando.Domain/AlmaceNando.Domain.csproj" />
+  </Project>
+  <Project Path="AlmanceNando.App/AlmanceNando.App.csproj">
+    <BuildDependency Project="AlmaceNando.Domain/AlmaceNando.Domain.csproj" />
+  </Project>
+</Solution>
