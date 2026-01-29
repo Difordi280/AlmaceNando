@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AlmaceNando.Domain.Models.Base;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.IO.Pipes;
@@ -6,12 +7,10 @@ using System.Text;
 
 namespace AlmaceNando.Domain.Models.Inventory
 {
-    internal class PriceHistory
+    public class PriceHistory:BaseEntity
     {
 
         public Guid ProductId { get; set; }
-
-        [ForeignKey("ProductId")]
         public virtual Product product { get; set; }
         //Precio a lo que lo compre 
         public decimal CostPrice { get; set; }
@@ -20,5 +19,6 @@ namespace AlmaceNando.Domain.Models.Inventory
 
         public DateTime PriceChangeDate { get; set; }
 
+   
     }
 }

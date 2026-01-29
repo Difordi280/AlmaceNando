@@ -6,7 +6,7 @@
   <Project Path="AlmaceNando.Logic/AlmaceNando.Logic.csproj">
     <BuildDependency Project="AlmaceNando.Domain/AlmaceNando.Domain.csproj" />
   </Project>
-  <Project Path="AlmanceNando.App/AlmanceNando.App.csproj">
+  <Project Path="AlmanceNando.App/AlmaceNando.App.csproj">
     <BuildDependency Project="AlmaceNando.Domain/AlmaceNando.Domain.csproj" />
   </Project>
 </Solution>

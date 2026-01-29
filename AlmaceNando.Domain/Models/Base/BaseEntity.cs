@@ -4,7 +4,7 @@ using System.Text;
 
 namespace AlmaceNando.Domain.Models.Base
 {
-    internal abstract class BaseEntity
+    public abstract class BaseEntity
     {
         //Direccion Id  natural para cualquier tabla 
         public Guid Id { get; set; }
