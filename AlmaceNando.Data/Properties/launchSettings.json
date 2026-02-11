@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "AlmaceNando.Data": {
+      "commandName": "Project"
+    },
+    "Perfil 1": {
+      "commandName": "Executable",
+      "executablePath": "C:\\Users\\USUARIO-SIP\\Desktop\\Carpeta Diego\\AlmaceNando\\AlmaceNando.App\\AlmaceNando.App.csproj.user"
+    }
+  }
+}

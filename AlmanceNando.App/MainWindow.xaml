@@ -1,12 +1,272 @@
-﻿<Window x:Class="AlmanceNando.App.MainWindow"
+﻿
+<hc:Window x:Class="AlmaceNando.App.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:AlmanceNando.App"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
+        xmlns:local="clr-AlmanceNando.App"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="Supermercado POS" Height="720" Width="1280"
+        WindowStartupLocation="CenterScreen">
 
+    <Window.DataContext>
+        <local:MainViewModel />
+    </Window.DataContext>
+
+
+    <Grid Background="{DynamicResource RegionBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- Header -->
+            <RowDefinition Height="*"/>
+            <!-- Contenido Principal -->
+        </Grid.RowDefinitions>
+
+        <!-- 1. HEADER / BARRA SUPERIOR -->
+        <!-- Vincula esto al color VERDE en tu App.xaml -->
+        <Border Grid.Row="0" Background="{DynamicResource PrimaryBrush}" Padding="20,10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="300"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Logo y Título -->
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Border Background="White" CornerRadius="5" Padding="5" Margin="0,0,10,0">
+                        <!-- Vincula esto al color NARANJA -->
+                        <TextBlock Text="S" FontWeight="Bold" Foreground="{DynamicResource SecondaryBrush}" FontSize="18"/>
+                    </Border>
+                    <TextBlock Text="SISTEMA SUPERMERCADO" Foreground="White" FontWeight="Bold" VerticalAlignment="Center" FontSize="16"/>
+                </StackPanel>
+
+                <!-- Menú de Navegación -->
+                <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
+                    <RadioButton Content="Dashboard" Style="{StaticResource RadioButtonIcon}" IsChecked="True" Foreground="White" Margin="5,0"/>
+                    <RadioButton Content="Inventario" Style="{StaticResource RadioButtonIcon}" Foreground="White" Margin="5,0"/>
+                    <RadioButton Content="Reportes" Style="{StaticResource RadioButtonIcon}" Foreground="White" Margin="5,0"/>
+                    <RadioButton Content="Clientes" Style="{StaticResource RadioButtonIcon}" Foreground="White" Margin="5,0"/>
+                </StackPanel>
+
+                <!-- Buscador Global -->
+                <hc:SearchBar Grid.Column="2"  Style="{StaticResource SearchBarPlus}" />
+            </Grid>
+        </Border>
+
+        <!-- 2. CONTENIDO PRINCIPAL (3 COLUMNAS) -->
+        <Grid Grid.Row="1" Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <!-- Cuentas/Mesas -->
+                <ColumnDefinition Width="2.5*"/>
+                <!-- Productos -->
+                <ColumnDefinition Width="1.2*"/>
+                <!-- Carrito -->
+            </Grid.ColumnDefinitions>
+
+            <!-- COLUMNA 1: CUENTAS ACTIVAS -->
+            <Border Grid.Column="0" Background="White" CornerRadius="10" Margin="0,0,10,0" Effect="{StaticResource EffectShadow2}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Border BorderThickness="0,0,0,1" BorderBrush="#EEEEEE" Padding="15">
+                        <StackPanel Orientation="Horizontal">
+                            <!-- Indicador Naranja -->
+                            <Border Width="5" Height="20" CornerRadius="2" Background="{DynamicResource SecondaryBrush}" Margin="0,0,10,0"/>
+                            <TextBlock Text="Cuentas Activas" FontWeight="Bold" FontSize="16" Foreground="#333"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Lista con Scroll propio -->
+                    <ListBox Grid.Row="1" ItemsSource="{Binding Accounts}" BorderThickness="0" Background="Transparent" 
+                             ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="Padding" Value="10"/>
+                                <Setter Property="Margin" Value="5,2"/>
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="ListBoxItem">
+                                            <Border Background="{TemplateBinding Background}" CornerRadius="8" BorderThickness="1" BorderBrush="#F0F0F0" Padding="10">
+                                                <Grid>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="Auto"/>
+                                                        <RowDefinition Height="Auto"/>
+                                                    </Grid.RowDefinitions>
+                                                    <DockPanel LastChildFill="False">
+                                                        <TextBlock Text="{Binding Name}" FontWeight="Bold" DockPanel.Dock="Left"/>
+                                                        <TextBlock Text="{Binding Time}" FontSize="10" Foreground="Gray" DockPanel.Dock="Right" VerticalAlignment="Center"/>
+                                                    </DockPanel>
+                                                    <DockPanel Grid.Row="1" Margin="0,5,0,0">
+                                                        <TextBlock Text="{Binding User}" FontSize="11" FontStyle="Italic" Foreground="Gray"/>
+                                                        <TextBlock Text="{Binding Total, StringFormat='${0:N2}'}" DockPanel.Dock="Right" FontWeight="Bold" Foreground="{DynamicResource PrimaryBrush}"/>
+                                                    </DockPanel>
+                                                </Grid>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                    </ListBox>
+                </Grid>
+            </Border>
+
+            <!-- COLUMNA 2: PRODUCTOS -->
+            <Border Grid.Column="1" Background="White" CornerRadius="10" Margin="0,0,10,0" Effect="{StaticResource EffectShadow2}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Border BorderThickness="0,0,0,1" BorderBrush="#EEEEEE" Padding="15">
+                        <DockPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <!-- Indicador Verde -->
+                                <Border Width="5" Height="20" CornerRadius="2" Background="{DynamicResource PrimaryBrush}" Margin="0,0,10,0"/>
+                                <TextBlock Text="Productos" FontWeight="Bold" FontSize="16" Foreground="#333"/>
+                            </StackPanel>
+                            <!-- Filtros rápidos (Botones pequeños) -->
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                <Button Content="Todo" Style="{StaticResource ButtonDashed}" Margin="2,0"/>
+                                <Button Content="Lácteos" Style="{StaticResource ButtonDashed}" Margin="2,0"/>
+                            </StackPanel>
+                        </DockPanel>
+                    </Border>
+
+                    <!-- Lista de Productos tipo Grid (WrapPanel) -->
+                    <ListBox Grid.Row="1" ItemsSource="{Binding Products}" BorderThickness="0" Background="Transparent"
+                             ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel IsItemsHost="True" />
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <hc:Card Width="140" Height="140" Margin="5" Effect="{StaticResource EffectShadow1}" BorderThickness="0">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="2*"/>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        <!-- Icono -->
+                                        <TextBlock Text="{Binding Icon}" FontSize="40" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                                        <!-- Nombre -->
+                                        <TextBlock Grid.Row="1" Text="{Binding Name}" TextWrapping="Wrap" TextAlignment="Center" FontWeight="SemiBold" FontSize="12" Margin="5,0"/>
+
+                                        <!-- Precio -->
+                                        <TextBlock Grid.Row="2" Text="{Binding Price, StringFormat='${0:N2}'}" 
+                                                   HorizontalAlignment="Center" FontWeight="Bold" 
+                                                   Foreground="{DynamicResource PrimaryBrush}" Margin="0,0,0,10"/>
+
+                                        <!-- Botón Flotante (Visual) -->
+                                        <Border Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5" 
+                                                Background="{DynamicResource SecondaryBrush}" CornerRadius="10" Padding="5">
+                                            <TextBlock Text="+" Foreground="White" FontWeight="Bold"/>
+                                        </Border>
+                                    </Grid>
+                                </hc:Card>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </Border>
+
+            <!-- COLUMNA 3: CARRITO -->
+            <Border Grid.Column="2" Background="White" CornerRadius="10" Effect="{StaticResource EffectShadow2}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Border Background="#333333" Padding="15" CornerRadius="10,10,0,0">
+                        <DockPanel>
+                            <TextBlock Text="CESTA DE COMPRA" Foreground="White" FontWeight="Bold"/>
+                            <Button Style="{StaticResource ButtonIcon}" Foreground="White" HorizontalAlignment="Right" Content="🗑️"/>
+                        </DockPanel>
+                    </Border>
+
+                    <!-- Items del Carrito -->
+                    <ListView Grid.Row="1" ItemsSource="{Binding Cart}" BorderThickness="0">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="0,5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Name}" FontWeight="Bold" Foreground="#333"/>
+                                        <TextBlock Text="{Binding Price, StringFormat='${0:N2} x {1} uds'}" FontSize="11" Foreground="Gray"/>
+                                    </StackPanel>
+                                    <TextBlock Grid.Column="1" Text="{Binding Total, StringFormat='${0:N2}'}" 
+                                               FontWeight="Bold" Foreground="{DynamicResource PrimaryBrush}" VerticalAlignment="Center"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+
+                    <!-- Footer del Carrito (Totales) -->
+                    <StackPanel Grid.Row="2" Background="#F9F9F9" >
+                        <DockPanel Margin="0,0,0,10">
+                            <TextBlock Text="TOTAL" FontWeight="Bold" FontSize="16"/>
+                            <TextBlock Text="{Binding GrandTotal, StringFormat='${0:N2}'}" 
+                                       DockPanel.Dock="Right" FontWeight="Black" FontSize="20" 
+                                       Foreground="{DynamicResource PrimaryBrush}"/>
+                        </DockPanel>
+
+                        <Button Content="PAGAR AHORA" 
+                                Background="{DynamicResource PrimaryBrush}" 
+                                Foreground="White" 
+                                Height="40" Margin="0,0,0,5" 
+                                BorderThickness="0" Style="{StaticResource ButtonPrimary}"/>
+
+                        <Button Content="Cargar a Deuda" 
+                                Background="{DynamicResource SecondaryBrush}" 
+                                Foreground="White" 
+                                Height="35" 
+                                BorderThickness="0" Style="{StaticResource ButtonPrimary}"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
     </Grid>
-</Window>
+</hc:Window>
+    ```
+
+---
+
+### 3. Preparación para tus colores (App.xaml)
+
+Como pediste, no he puesto los colores "hardcoded" en el XAML, sino que he usado `DynamicResource`. Para que funcione y no se vea transparente, cuando estés listo para meter los colores, añade esto en tu `App.xaml` dentro de `ResourceDictionary`:
+
+```xml
+    <!-- ESTO IRÁ EN TU APP.XAML LUEGO -->
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <hc:ThemeResources/>
+                <hc:Theme/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- TUS COLORES (Defínelos aquí cuando quieras) -->
+            <SolidColorBrush x:Key="PrimaryBrush" Color="#2D5A27"/>
+            <!-- Verde -->
+            <SolidColorBrush x:Key="SecondaryBrush" Color="#FF8C00"/>
+            <!-- Naranja -->
+            <SolidColorBrush x:Key="AccentBrush" Color="#E63946"/>
+            <!-- Rojo -->
+        </ResourceDictionary>
+    </Application.Resources>

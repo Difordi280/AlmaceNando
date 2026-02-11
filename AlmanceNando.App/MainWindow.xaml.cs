@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using AlmaceNando.App;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -9,7 +10,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace AlmanceNando.App
+
+namespace AlmaceNando.App
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -19,6 +21,8 @@ namespace AlmanceNando.App
         public MainWindow()
         {
             InitializeComponent();
+            this.DataContext= new MainViewModel() ;
+
         }
     }
 }

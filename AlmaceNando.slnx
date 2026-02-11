@@ -1,12 +1,10 @@
 <Solution>
+  <Project Path="AlmaceNando.App/AlmaceNando.App.csproj" Id="3a9ab03c-ccd3-4309-a254-506edc87d6fc" />
   <Project Path="AlmaceNando.Data/AlmaceNando.Data.csproj">
     <BuildDependency Project="AlmaceNando.Domain/AlmaceNando.Domain.csproj" />
   </Project>
   <Project Path="AlmaceNando.Domain/AlmaceNando.Domain.csproj" />
   <Project Path="AlmaceNando.Logic/AlmaceNando.Logic.csproj">
-    <BuildDependency Project="AlmaceNando.Domain/AlmaceNando.Domain.csproj" />
-  </Project>
-  <Project Path="AlmanceNando.App/AlmaceNando.App.csproj">
     <BuildDependency Project="AlmaceNando.Domain/AlmaceNando.Domain.csproj" />
   </Project>
 </Solution>
