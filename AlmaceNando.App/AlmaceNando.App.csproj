@@ -17,4 +17,10 @@
     <Folder Include="ViewModels\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\AlmaceNando.Data\AlmaceNando.Data.csproj" />
+    <ProjectReference Include="..\AlmaceNando.Domain\AlmaceNando.Domain.csproj" />
+    <ProjectReference Include="..\AlmaceNando.Logic\AlmaceNando.Logic.csproj" />
+  </ItemGroup>
+
 </Project>

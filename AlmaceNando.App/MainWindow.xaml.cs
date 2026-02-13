@@ -1,12 +1,15 @@
-﻿using System.Windows;
+﻿using AlmaceNando.App.ViewModel;
+using System.Windows;
 
 namespace AlmaceNando.App
 {
-    public partial class MainWindow : HandyControl.Controls.Window
+    public partial class MainWindow 
     {
-        public MainWindow()
+        public MainWindow(MainViewModel viewModel )
         {
             InitializeComponent();
+
+            this.DataContext = viewModel;
         }
     }
 }

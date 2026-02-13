@@ -10,50 +10,59 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="2.5*"/>
-            <ColumnDefinition Width="1.2*"/>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="1.3*"/>
         </Grid.ColumnDefinitions>
 
-        <Border Grid.Column="0" Background="White" CornerRadius="10" Margin="0,0,10,0" >
+        <Border Grid.Column="0" Background="White" CornerRadius="15" Margin="0,0,15,0">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="20" Color="#DDDDDD" ShadowDepth="5" Opacity="0.4"/>
+            </Border.Effect>
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <Border BorderThickness="0,0,0,1" BorderBrush="#EEEEEE" Padding="15">
+                <Border BorderThickness="0,0,0,1" BorderBrush="{DynamicResource BorderBrush}" Padding="20">
                     <StackPanel Orientation="Horizontal">
-                        <Border Width="5" Height="20" CornerRadius="2" Background="{DynamicResource SecondaryBrush}" Margin="0,0,10,0"/>
-                        <TextBlock Text="Cuentas Activas" FontWeight="Bold" FontSize="16" Foreground="#333"/>
+                        <Border Width="4" Height="24" CornerRadius="2" Background="{DynamicResource SecondaryBrush}" Margin="0,0,10,0"/>
+                        <TextBlock Text="Cuentas Activas" FontWeight="Bold" FontSize="16" Foreground="{DynamicResource TextPrimaryBrush}"/>
                     </StackPanel>
                 </Border>
 
                 <ListBox Grid.Row="1" ItemsSource="{Binding Accounts}" BorderThickness="0" Background="Transparent" 
-                         ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled" Padding="10">
                     <ListBox.ItemContainerStyle>
                         <Style TargetType="ListBoxItem">
-                            <Setter Property="Padding" Value="10"/>
-                            <Setter Property="Margin" Value="5,2"/>
-                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="Margin" Value="0,5"/>
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="ListBoxItem">
-                                        <Border Background="{TemplateBinding Background}" CornerRadius="8" BorderThickness="1" BorderBrush="#F0F0F0" Padding="10">
+                                        <Border x:Name="bd" Background="White" CornerRadius="10" BorderThickness="1" BorderBrush="{DynamicResource BorderBrush}" Padding="15" Cursor="Hand">
                                             <Grid>
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition Height="Auto"/>
                                                     <RowDefinition Height="Auto"/>
                                                 </Grid.RowDefinitions>
-                                                <DockPanel LastChildFill="False">
-                                                    <TextBlock Text="{Binding Name}" FontWeight="Bold" DockPanel.Dock="Left"/>
-                                                    <TextBlock Text="{Binding Time}" FontSize="10" Foreground="Gray" DockPanel.Dock="Right" VerticalAlignment="Center"/>
+                                                <DockPanel LastChildFill="False" Margin="0,0,0,8">
+                                                    <TextBlock Text="{Binding Name}" FontWeight="Bold" Foreground="#37474F" FontSize="14" DockPanel.Dock="Left"/>
+                                                    <Border Background="#E8F5E9" CornerRadius="5" Padding="6,2" DockPanel.Dock="Right">
+                                                        <TextBlock Text="{Binding Time}" FontSize="11" Foreground="{DynamicResource PrimaryBrush}" FontWeight="SemiBold"/>
+                                                    </Border>
                                                 </DockPanel>
-                                                <DockPanel Grid.Row="1" Margin="0,5,0,0">
-                                                    <TextBlock Text="{Binding User}" FontSize="11" FontStyle="Italic" Foreground="Gray"/>
-                                                    <TextBlock Text="{Binding Total, StringFormat='${0:N2}'}" DockPanel.Dock="Right" FontWeight="Bold" Foreground="{DynamicResource PrimaryBrush}"/>
+                                                <DockPanel Grid.Row="1">
+                                                    <TextBlock Text="{Binding User}" FontSize="12" Foreground="#90A4AE" VerticalAlignment="Center"/>
+                                                    <TextBlock Text="{Binding Total, StringFormat='${0:N2}'}" DockPanel.Dock="Right" FontWeight="Bold" FontSize="15" Foreground="{DynamicResource PrimaryBrush}"/>
                                                 </DockPanel>
                                             </Grid>
                                         </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="bd" Property="BorderBrush" Value="{DynamicResource PrimaryBrush}"/>
+                                                <Setter TargetName="bd" Property="Background" Value="#F1F8E9"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
                                     </ControlTemplate>
                                 </Setter.Value>
                             </Setter>
@@ -63,34 +72,34 @@
             </Grid>
         </Border>
 
-        <Border Grid.Column="1" Background="White" CornerRadius="10" Margin="0,0,10,0" >
+        <Border Grid.Column="1" Background="White" CornerRadius="15" Margin="0,0,15,0">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="20" Color="#DDDDDD" ShadowDepth="5" Opacity="0.4"/>
+            </Border.Effect>
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <StackPanel Grid.Row="0" Margin="15">
-                    <DockPanel LastChildFill="False" Margin="0,0,0,10">
+                <StackPanel Grid.Row="0" Margin="20">
+                    <DockPanel LastChildFill="False" Margin="0,0,0,15">
                         <StackPanel Orientation="Horizontal">
-                            <Border Width="5" Height="20" CornerRadius="2" Background="{DynamicResource PrimaryBrush}" Margin="0,0,10,0"/>
-                            <TextBlock Text="Productos" FontWeight="Bold" FontSize="16" Foreground="#333"/>
+                            <Border Width="4" Height="24" CornerRadius="2" Background="{DynamicResource PrimaryBrush}" Margin="0,0,10,0"/>
+                            <TextBlock Text="Productos" FontWeight="Bold" FontSize="18" Foreground="{DynamicResource TextPrimaryBrush}"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
-                            <Button Content="Todo"  Margin="2,0"/>
-                            <Button Content="Lácteos"  Margin="2,0"/>
+                            <RadioButton Content="Todo" IsChecked="True" Style="{StaticResource RadioButtonIcon}" Margin="5,0" Foreground="{DynamicResource PrimaryBrush}"/>
+                            <RadioButton Content="Lácteos" Style="{StaticResource RadioButtonIcon}" Margin="5,0"/>
+                            <RadioButton Content="Frutas" Style="{StaticResource RadioButtonIcon}" Margin="5,0"/>
                         </StackPanel>
                     </DockPanel>
 
-                    <hc:SearchBar Style="{StaticResource SearchBarPlus}" 
-                                  
-                                  Height="35"/>
+                    <hc:SearchBar Style="{StaticResource SearchBarPlus}" Height="40" Margin="0,5"/>
                 </StackPanel>
 
-                <Separator Grid.Row="0" VerticalAlignment="Bottom" Background="#EEEEEE"/>
-
                 <ListBox Grid.Row="1" ItemsSource="{Binding Products}" BorderThickness="0" Background="Transparent"
-                         ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled" Padding="15,0,15,15">
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
                             <WrapPanel IsItemsHost="True" />
@@ -98,7 +107,10 @@
                     </ListBox.ItemsPanel>
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <hc:Card Width="140" Height="140" Margin="5"  BorderThickness="0">
+                            <Border Width="150" Height="160" Margin="8" Background="White" CornerRadius="12" BorderThickness="1" BorderBrush="{DynamicResource BorderBrush}">
+                                <Border.Effect>
+                                    <DropShadowEffect BlurRadius="10" Color="#EEE" ShadowDepth="3" Opacity="0.5"/>
+                                </Border.Effect>
                                 <hc:Interaction.Triggers>
                                     <hc:EventTrigger EventName="MouseLeftButtonDown">
                                         <hc:EventToCommand Command="{Binding DataContext.AddToCartCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" />
@@ -111,25 +123,33 @@
                                         <RowDefinition Height="*"/>
                                         <RowDefinition Height="Auto"/>
                                     </Grid.RowDefinitions>
-                                    <TextBlock Text="{Binding Icon}" FontSize="40" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    <TextBlock Grid.Row="1" Text="{Binding Name}" TextWrapping="Wrap" TextAlignment="Center" FontWeight="SemiBold" FontSize="12" Margin="5,0"/>
-                                    <TextBlock Grid.Row="2" Text="{Binding Price, StringFormat='${0:N2}'}" 
-                                               HorizontalAlignment="Center" FontWeight="Bold" 
-                                               Foreground="{DynamicResource PrimaryBrush}" Margin="0,0,0,10"/>
 
-                                    <Border Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5" 
-                                            Background="{DynamicResource SecondaryBrush}" CornerRadius="10" Padding="5">
-                                        <TextBlock Text="+" Foreground="White" FontWeight="Bold"/>
+                                    <Border Grid.Row="0" Background="#FAFAFA" CornerRadius="12,12,0,0">
+                                        <TextBlock Text="{Binding Icon}" FontSize="45" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+
+                                    <TextBlock Grid.Row="1" Text="{Binding Name}" TextWrapping="Wrap" TextAlignment="Center" VerticalAlignment="Center" FontWeight="SemiBold" Foreground="#455A64" FontSize="13" Margin="8,0"/>
+
+                                    <TextBlock Grid.Row="2" Text="{Binding Price, StringFormat='${0:N2}'}" 
+                                               HorizontalAlignment="Center" FontWeight="ExtraBold" FontSize="16"
+                                               Foreground="{DynamicResource PrimaryBrush}" Margin="0,0,0,12"/>
+
+                                    <Border Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="8" 
+                                            Background="{DynamicResource SecondaryBrush}" Width="28" Height="28" CornerRadius="14">
+                                        <TextBlock Text="+" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16"/>
                                     </Border>
                                 </Grid>
-                            </hc:Card>
+                            </Border>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
             </Grid>
         </Border>
 
-        <Border Grid.Column="2" Background="White" CornerRadius="10" >
+        <Border Grid.Column="2" Background="White" CornerRadius="15">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="20" Color="#DDDDDD" ShadowDepth="5" Opacity="0.4"/>
+            </Border.Effect>
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -137,32 +157,32 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <Border Background="#333333" Padding="15" CornerRadius="10,10,0,0">
+                <Border Background="{DynamicResource TextPrimaryBrush}" Padding="20" CornerRadius="15,15,0,0">
                     <DockPanel>
-                        <TextBlock Text="CESTA DE COMPRA" Foreground="White" FontWeight="Bold"/>
-                        <Button  Foreground="White" HorizontalAlignment="Right" Content="🗑️" 
-                                Command="{Binding ClearCartCommand}"/>
+                        <TextBlock Text="CESTA" Foreground="White" FontWeight="Bold" FontSize="16" Typography.StandardLigatures="True"/>
+                        <Button Foreground="#FF8A80" HorizontalAlignment="Right" Content="Vaciar" Background="Transparent" BorderThickness="0"
+                                Command="{Binding ClearCartCommand}" FontWeight="SemiBold" Cursor="Hand"/>
                     </DockPanel>
                 </Border>
 
-                <ListView Grid.Row="1" ItemsSource="{Binding Cart}" BorderThickness="0">
+                <ListView Grid.Row="1" ItemsSource="{Binding Cart}" BorderThickness="0" Margin="0,10">
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Grid Margin="0,5">
+                            <Grid Margin="10,8">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
                                 <StackPanel>
-                                    <TextBlock Text="{Binding Name}" FontWeight="Bold" Foreground="#333"/>
-                                    <TextBlock Text="{Binding Price, StringFormat='${0:N2} x {1} uds'}" FontSize="11" Foreground="Gray"/>
+                                    <TextBlock Text="{Binding Name}" FontWeight="Bold" Foreground="#37474F"/>
+                                    <TextBlock Text="{Binding Price, StringFormat='${0:N2} x {1} uds'}" FontSize="12" Foreground="Gray"/>
                                 </StackPanel>
                                 <TextBlock Grid.Column="1" Text="{Binding Total, StringFormat='${0:N2}'}" 
                                            FontWeight="Bold" Foreground="{DynamicResource PrimaryBrush}" VerticalAlignment="Center" Margin="10,0"/>
 
-                                <Button Grid.Column="2" Content="x" Width="20" Height="20" Padding="0"
-                                         
+                                <Button Grid.Column="2" Content="✕" Width="24" Height="24" Padding="0" Background="#FFEBEE" Foreground="{DynamicResource DangerBrush}" BorderThickness="0"
+                                        Style="{StaticResource ButtonCustom}" hc:BorderElement.CornerRadius="12"
                                         Command="{Binding DataContext.RemoveFromCartCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                         CommandParameter="{Binding}"/>
                             </Grid>
@@ -170,21 +190,30 @@
                     </ListView.ItemTemplate>
                 </ListView>
 
-                <StackPanel Grid.Row="2" Background="#F9F9F9" Margin="10">
-                    <DockPanel Margin="0,0,0,10">
-                        <TextBlock Text="TOTAL" FontWeight="Bold" FontSize="16"/>
-                        <TextBlock Text="{Binding GrandTotal, StringFormat='${0:N2}'}" 
-                                   DockPanel.Dock="Right" FontWeight="Black" FontSize="20" 
-                                   Foreground="{DynamicResource PrimaryBrush}"/>
-                    </DockPanel>
+                <StackPanel Grid.Row="2" Background="#FAFAFA" Margin="15">
+                    <Border BorderThickness="0,1,0,0" BorderBrush="#EEE" Margin="0,0,0,15" Padding="0,10,0,0">
+                        <DockPanel>
+                            <TextBlock Text="TOTAL A PAGAR" FontWeight="Bold" FontSize="14" Foreground="Gray" VerticalAlignment="Bottom"/>
+                            <TextBlock Text="{Binding GrandTotal, StringFormat='${0:N2}'}" 
+                       DockPanel.Dock="Right" FontWeight="Black" FontSize="26" 
+                       Foreground="{DynamicResource PrimaryBrush}"/>
+                        </DockPanel>
+                    </Border>
 
                     <Button Content="PAGAR AHORA" Command="{Binding CheckoutCommand}"
-                            Background="{DynamicResource PrimaryBrush}" Foreground="White" 
-                            Height="40" Margin="0,0,0,5" BorderThickness="0" />
+            Background="{DynamicResource PrimaryBrush}" Foreground="White" FontSize="16" FontWeight="Bold"
+            Height="50" Margin="0,0,0,10" BorderThickness="0" 
+            hc:BorderElement.CornerRadius="8">
+                        <Button.Effect>
+                            <DropShadowEffect Color="{StaticResource PrimaryColor}" BlurRadius="10" ShadowDepth="3" Opacity="0.4"/>
+                        </Button.Effect>
+                    </Button>
 
                     <Button Content="Cargar a Deuda" 
-                            Background="{DynamicResource SecondaryBrush}" Foreground="White" 
-                            Height="35" BorderThickness="0" />
+            Background="White" Foreground="{DynamicResource SecondaryBrush}" 
+            BorderBrush="{DynamicResource SecondaryBrush}" BorderThickness="2"
+            Height="45" FontWeight="Bold"
+            hc:BorderElement.CornerRadius="8"/>
                 </StackPanel>
             </Grid>
         </Border>
