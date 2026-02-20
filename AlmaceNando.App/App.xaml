@@ -14,10 +14,8 @@
 
             <Color x:Key="PrimaryColor">#00C853</Color>
             <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource PrimaryColor}"/>
-
             <Color x:Key="PrimaryDarkColor">#1B5E20</Color>
             <SolidColorBrush x:Key="PrimaryDarkBrush" Color="{StaticResource PrimaryDarkColor}"/>
-
             <SolidColorBrush x:Key="SecondaryBrush" Color="#FF6D00"/>
             <SolidColorBrush x:Key="BackgroundBrush" Color="#F5F6F8"/>
             <SolidColorBrush x:Key="TextPrimaryBrush" Color="#263238"/>
@@ -34,10 +32,7 @@
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="RadioButton">
-                            <Border x:Name="bdr" 
-                                    Background="{TemplateBinding Background}" 
-                                    CornerRadius="20" 
-                                    Padding="{TemplateBinding Padding}">
+                            <Border x:Name="bdr" Background="{TemplateBinding Background}" CornerRadius="20" Padding="{TemplateBinding Padding}">
                                 <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Border>
                             <ControlTemplate.Triggers>
@@ -48,11 +43,6 @@
                                 <Trigger Property="IsChecked" Value="True">
                                     <Setter TargetName="bdr" Property="Background" Value="White"/>
                                     <Setter Property="Foreground" Value="{StaticResource PrimaryDarkBrush}"/>
-                                    <Setter TargetName="bdr" Property="Effect">
-                                        <Setter.Value>
-                                            <DropShadowEffect BlurRadius="10" ShadowDepth="2" Direction="270" Color="Black" Opacity="0.1"/>
-                                        </Setter.Value>
-                                    </Setter>
                                 </Trigger>
                             </ControlTemplate.Triggers>
                         </ControlTemplate>
@@ -60,10 +50,27 @@
                 </Setter>
             </Style>
 
+            <Style x:Key="ListViewItemTransparent" TargetType="ListViewItem">
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Margin" Value="0"/>
+                <Setter Property="Padding" Value="0"/>
+                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                <Style.Triggers>
+                    <Trigger Property="IsSelected" Value="True">
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="BorderBrush" Value="Transparent"/>
+                    </Trigger>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="Transparent"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
             <DataTemplate DataType="{x:Type vms:SalesViewModel}">
                 <views:SalesWindow />
             </DataTemplate>
-
         </ResourceDictionary>
     </Application.Resources>
 </Application>

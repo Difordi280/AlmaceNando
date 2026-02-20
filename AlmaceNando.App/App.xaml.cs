@@ -24,8 +24,10 @@ namespace AlmaceNando.App
 
             //Añadimos Viewmodels
             services.AddTransient<MainViewModel>();
-            services.AddTransient< ViewModelBase,SalesViewModel>();
 
+            // esto es para que funcione la inyeccion dinamica 
+            services.AddSingleton<SalesViewModel>();
+            services.AddSingleton<ViewModelBase>(provider => provider.GetRequiredService<SalesViewModel>());
             //
             services.AddSingleton<MainWindow>();
 

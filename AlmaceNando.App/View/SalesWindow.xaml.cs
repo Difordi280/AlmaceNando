@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using AlmaceNando.App.ViewModel;
 
 
 namespace AlmaceNando.App.View
@@ -15,6 +16,10 @@ namespace AlmaceNando.App.View
         public SalesWindow()
         {
             InitializeComponent();
+            
+            
         }
+
+      
     }
 }
