@@ -5,8 +5,13 @@ using AlmaceNando.Domain.Models.Inventory;
 
 namespace AlmaceNando.Domain.Repositories
 {
-    public interface IProductRepository: IRepository<Product>
+    public interface IProductRepository
     {
+        Task<IEnumerable<Product>> Search(string write);
+
+
+
+
 
     }
 }

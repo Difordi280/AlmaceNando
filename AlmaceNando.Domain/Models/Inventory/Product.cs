@@ -10,6 +10,8 @@ namespace AlmaceNando.Domain.Models.Inventory
     {
         
         public string Name { get; set; }
+        
+        public string SearchName { get; set; }
         //Fecha de ultima actualizacion de datos
         public DateTime UpdateAt { get; set; } 
 
@@ -25,7 +27,7 @@ namespace AlmaceNando.Domain.Models.Inventory
         //conjunto de palabras que podrian definir el producto
         //entre mas palabras hayan mas facil se supone que debe ser para 
         //encontrar el producto
-        public string? keyword { get; set; }
+        public string keyword { get; set; }
 
         //Columna derivada, para buscar objetos
         //REACONDIONAR CUANDO SEPAS, USAR LINQ
