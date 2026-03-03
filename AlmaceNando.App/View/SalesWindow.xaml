@@ -51,37 +51,78 @@
             <Border.Effect>
                 <DropShadowEffect BlurRadius="20" Color="#DDDDDD" ShadowDepth="5" Opacity="0.4"/>
             </Border.Effect>
+
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <Border Padding="20">
+
+                <Border Padding="20" Grid.Row="0">
                     <StackPanel>
-                        <TextBlock Text="Productos" FontWeight="Bold" FontSize="18" Margin="0,0,0,10"/>
-                        <hc:SearchBar Style="{StaticResource SearchBarPlus}" Height="40"/>
+                        <TextBlock Text="Productos" FontWeight="Bold" FontSize="18" Margin="0,0,0,10" Foreground="#333"/>
+                        <hc:SearchBar Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" 
+                                     Style="{StaticResource SearchBarPlus}" 
+                                     Height="40"/>
                     </StackPanel>
                 </Border>
-                <ListBox Grid.Row="1" ItemsSource="{Binding Products}" BorderThickness="0" Background="Transparent">
+
+                <ListBox Grid.Row="1" 
+                         ItemsSource="{Binding Items}" 
+                         SelectedItem="{Binding SelectedProduct}"                         
+                         BorderThickness="0" 
+                         Background="Transparent"
+                         Margin="10,0,10,10"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                         ScrollViewer.VerticalScrollBarVisibility="Auto">
+
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListBoxItem">
+                                        <ContentPresenter />
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <WrapPanel/>
+                            <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center"/>
                         </ItemsPanelTemplate>
                     </ListBox.ItemsPanel>
+
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <Border Width="135" Height="150" Margin="5" Background="White" CornerRadius="12" BorderThickness="1" BorderBrush="#EEE">
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="*"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                    </Grid.RowDefinitions>
-                                    <TextBlock Text="{Binding Icon}" FontSize="35" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    <TextBlock Grid.Row="1" Text="{Binding Name}" TextAlignment="Center" FontSize="11" Margin="5,2" TextWrapping="Wrap"/>
-                                    <TextBlock Grid.Row="2" Text="{Binding Price, StringFormat='${0:N0}'}" HorizontalAlignment="Center" FontWeight="Bold" Margin="0,0,0,8"/>
-                                </Grid>
+                            <Border x:Name="CardBorder" Width="135" Height="150" Margin="5" Background="White" 
+                                    CornerRadius="12" BorderThickness="1.5" BorderBrush="#EEE">
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="📦" FontSize="30" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="{Binding Name}" 
+                                               FontWeight="SemiBold" 
+                                               TextAlignment="Center" 
+                                               Margin="5,5,5,0" 
+                                               TextWrapping="Wrap" 
+                                               Foreground="Black"/>
+                                    <TextBlock Text="{Binding Price, StringFormat='${0:N0}'}" 
+                                               Foreground="#2ecc71" 
+                                               HorizontalAlignment="Center" 
+                                               FontWeight="Bold"/>
+                                </StackPanel>
                             </Border>
+                            <DataTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="CardBorder" Property="BorderBrush" Value="{DynamicResource PrimaryBrush}"/>
+                                    <Setter TargetName="CardBorder" Property="Background" Value="#FAFAFA"/>
+                                </Trigger>
+                                <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="True">
+                                    <Setter TargetName="CardBorder" Property="BorderBrush" Value="{DynamicResource PrimaryBrush}"/>
+                                    <Setter TargetName="CardBorder" Property="BorderThickness" Value="2"/>
+                                    <Setter TargetName="CardBorder" Property="Background" Value="#F0F7FF"/>
+                                </DataTrigger>
+                            </DataTemplate.Triggers>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
@@ -106,7 +147,6 @@
                     </DockPanel>
                 </Border>
 
-
                 <ListView Grid.Row="1" 
           ItemsSource="{Binding Cart}" 
           Style="{x:Null}" 
@@ -119,71 +159,82 @@
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="ListViewItem">
-                                        <ContentPresenter HorizontalAlignment="Stretch" Margin="0,0,5,0"/>
+                                        <Border x:Name="ItemBorder" 
+                                Background="White" 
+                                CornerRadius="10" 
+                                Margin="8,3" 
+                                Padding="12,10" 
+                                BorderBrush="#F0F0F0" 
+                                BorderThickness="1">
+                                            <ContentPresenter HorizontalAlignment="Stretch"/>
+                                        </Border>
+
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="ItemBorder" Property="Background" Value="#F9F9F9"/>
+                                                <Setter TargetName="ItemBorder" Property="BorderBrush" Value="#E0E0E0"/>
+                                            </Trigger>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter TargetName="ItemBorder" Property="BorderBrush" Value="{DynamicResource PrimaryBrush}"/>
+                                                <Setter TargetName="ItemBorder" Property="BorderThickness" Value="1.5"/>
+                                                <Setter TargetName="ItemBorder" Property="Background" Value="#F0F7FF"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
                                     </ControlTemplate>
                                 </Setter.Value>
                             </Setter>
                         </Style>
                     </ListView.ItemContainerStyle>
+
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Border Background="White" CornerRadius="10" Margin="8,3" Padding="12,10" BorderBrush="#F0F0F0" BorderThickness="1">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="65"/>
-                                        <ColumnDefinition Width="35"/>
-                                    </Grid.ColumnDefinitions>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="65"/>
+                                    <ColumnDefinition Width="70"/>
+                                    <ColumnDefinition Width="35"/>
+                                </Grid.ColumnDefinitions>
 
-                                    <TextBlock Grid.Column="0" Text="📦" VerticalAlignment="Center" Margin="0,0,10,0" FontSize="14"/>
+                                <TextBlock Grid.Column="0" Text="📦" VerticalAlignment="Center" Margin="0,0,10,0" FontSize="14"/>
 
-                                    <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="0,0,10,0">
-                                        <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="11" TextWrapping="Wrap"/>
-                                        <TextBlock Text="{Binding Price, StringFormat='${0:N0}'}" Foreground="Gray" FontSize="9"/>
-                                    </StackPanel>
+                                <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="0,0,10,0">
+                                    <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="11" TextWrapping="Wrap"/>
+                                    <TextBlock Text="{Binding Price, StringFormat='${0:N0}'}" Foreground="Gray" FontSize="9"/>
+                                </StackPanel>
 
-                                    <hc:NumericUpDown Grid.Column="2" Value="{Binding Quantity}" Width="45" Height="22" FontSize="10" VerticalAlignment="Center"/>
+                                <hc:NumericUpDown Grid.Column="2" 
+                                  Value="{Binding Quantity}" 
+                                  Minimum="1" Maximum="99"
+                                  Width="58" Height="25" 
+                                  FontSize="11" 
+                                  VerticalAlignment="Center"/>
 
-                                    <TextBlock Grid.Column="3" Text="{Binding Total, StringFormat='${0:N0}'}" 
-                               FontWeight="Black" 
-                               TextAlignment="Right" 
-                               VerticalAlignment="Center" 
-                               FontSize="11" 
-                               Foreground="{DynamicResource PrimaryBrush}"
-                               Margin="5,0"/>
+                                <TextBlock Grid.Column="3" Text="{Binding Total, StringFormat='${0:N0}'}" 
+                           FontWeight="Black" 
+                           TextAlignment="Right" 
+                           VerticalAlignment="Center" 
+                           FontSize="11" 
+                           Foreground="{DynamicResource PrimaryBrush}"
+                           Margin="5,0"/>
 
-                                    <Button Grid.Column="4" 
-                            Content="🗑️" 
-                            FontSize="12" 
-                            Width="28" 
-                            Height="28" 
-                            Background="Transparent" 
-                            BorderThickness="0" 
-                            Foreground="#E74C3C" 
-                            VerticalAlignment="Center"
-                            HorizontalAlignment="Right"
-                            Cursor="Hand"
-                            Command="{Binding DataContext.RemoveItemCommand, RelativeSource={RelativeSource AncestorType=ListView}}" 
-                            CommandParameter="{Binding}">
-                                        <Button.Style>
-                                            <Style TargetType="Button">
-                                                <Setter Property="Background" Value="Transparent"/>
-                                                <Style.Triggers>
-                                                    <Trigger Property="IsMouseOver" Value="True">
-                                                        <Setter Property="Background" Value="#FDECEA"/>
-                                                    </Trigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </Button.Style>
-                                    </Button>
-                                </Grid>
-                            </Border>
+                                <Button Grid.Column="4" Content="🗑️" FontSize="12" Width="28" Height="28" Background="Transparent" BorderThickness="0" Foreground="#E74C3C" VerticalAlignment="Center" HorizontalAlignment="Right" Cursor="Hand" Command="{Binding DataContext.RemoveItemCommand, RelativeSource={RelativeSource AncestorType=ListView}}" CommandParameter="{Binding}">
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Setter Property="Background" Value="Transparent"/>
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="#FDECEA"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+                            </Grid>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
-
 
                 <Border Grid.Row="2" Background="#F9F9F9" Padding="15" CornerRadius="0,0,15,15">
                     <StackPanel>
@@ -191,7 +242,7 @@
                             <TextBlock Text="TOTAL" Foreground="Gray" FontWeight="Bold"/>
                             <TextBlock Text="{Binding GrandTotal, StringFormat='${0:N2}'}" DockPanel.Dock="Right" FontWeight="Black" FontSize="22" Foreground="{DynamicResource PrimaryBrush}"/>
                         </DockPanel>
-                        <Button Content="PAGAR AHORA" Background="{DynamicResource PrimaryBrush}" Foreground="White" Height="45" FontWeight="Bold" hc:BorderElement.CornerRadius="10" Margin="0,0,0,8"/>
+                        <Button Content="PAGAR AHORA" Background="{DynamicResource PrimaryBrush}" Command="{Binding ProccessSaleCommand}" Foreground="White" Height="45" FontWeight="Bold" hc:BorderElement.CornerRadius="10" Margin="0,0,0,8"/>
                         <Button Content="Cargar a Deuda" Background="White" Foreground="{DynamicResource SecondaryBrush}" BorderBrush="{DynamicResource SecondaryBrush}" BorderThickness="1" Height="40" hc:BorderElement.CornerRadius="10"/>
                     </StackPanel>
                 </Border>

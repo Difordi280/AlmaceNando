@@ -11,7 +11,7 @@ using AlmaceNando.Data.Context;
 namespace AlmaceNando.Data.Repositories
 {
     
-    public abstract class Repositories<T> : IRepository<T> where T :  BaseEntity
+    public  class Repositories<T> : IRepository<T> where T :  BaseEntity
     {
         
         private readonly StoreContext _context;

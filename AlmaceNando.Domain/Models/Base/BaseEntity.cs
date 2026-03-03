@@ -18,5 +18,9 @@ namespace AlmaceNando.Domain.Models.Base
         //Para informar a la base de datos central de que el archivo se dio la orden de eliminarlo o no 
         public bool IsDeleted { get; set; }
         //Para informar al servidor central si el datos esta sincronizado o no 
+        
+       public bool SyncStatus { get; set; }
+
+
     }
 }

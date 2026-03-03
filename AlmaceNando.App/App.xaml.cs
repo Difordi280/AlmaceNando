@@ -7,6 +7,10 @@ using AlmaceNando.Domain.Models.Inventory;
 using AlmaceNando.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using AlmaceNando.Domain.Repositories;
+using AlmaceNando.Domain.IRepositories;
+using AlmaceNando.Logic.ServiceSales;
+using AlmaceNando.Logic.Interfaces;
 
 namespace AlmaceNando.App
 {
@@ -31,6 +35,12 @@ namespace AlmaceNando.App
             //
             services.AddSingleton<MainWindow>();
 
+            services.AddDbContext<StoreContext>();
+
+            // Añade esta línea antes de registrar los ViewModels y Servicios
+            services.AddScoped (typeof(IRepository<>), typeof(Repositories<>));
+            services.AddTransient<IProductRepository,ProductRepository>();
+            services.AddTransient<IServiceSales,ServiceSales>();
 
             _serviceProvider = services.BuildServiceProvider();
 

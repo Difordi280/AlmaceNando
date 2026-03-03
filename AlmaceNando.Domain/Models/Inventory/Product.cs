@@ -15,6 +15,8 @@ namespace AlmaceNando.Domain.Models.Inventory
         //Fecha de ultima actualizacion de datos
         public DateTime UpdateAt { get; set; } 
 
+        // precio en el momento 
+        public decimal Price { get; set; }
         public int Stock { get; set; }
         // El precio actualizado del producto al cual se deberia vender
         public decimal CurrentPrice { get; set; }

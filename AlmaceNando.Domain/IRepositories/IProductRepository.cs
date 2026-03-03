@@ -7,7 +7,7 @@ namespace AlmaceNando.Domain.Repositories
 {
     public interface IProductRepository
     {
-        Task<IEnumerable<Product>> Search(string write);
+        Task<IEnumerable<Product>> Search(string write,CancellationToken ct);
 
 
 

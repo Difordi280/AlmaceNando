@@ -18,6 +18,8 @@ namespace AlmaceNando.Domain.Models.Inventory
         public virtual Product ComponentProduct { get; set; }
         // Cantidad del producto componente en el combo
         public int Quantity { get; set; }
+        //Precio del producto en combo 
+        public decimal? Price { get; set; }
 
 
 

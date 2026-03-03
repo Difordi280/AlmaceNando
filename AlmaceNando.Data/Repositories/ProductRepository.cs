@@ -9,19 +9,19 @@ using System.Text;
 namespace AlmaceNando.Data.Repositories
 {
     public class ProductRepository : IProductRepository
-    {
+    {   
         private readonly StoreContext _context;
         public ProductRepository(StoreContext context )
         { _context= context; }
 
-        public async Task<IEnumerable<Product>> Search(string write) 
+        public async Task<IEnumerable<Product>> Search(string write, CancellationToken ct)
         {
-            var  ByBarCodeFilter = await _context.Set<BarCode>()
-                    .Where(x=> x.Code == write)
-                    .Select(b=> b.product)
+            var ByBarCodeFilter = await _context.Set<BarCode>()
+                    .Where(x => x.Code == write)
+                    .Select(b => b.product)
                     .FirstOrDefaultAsync();
 
-            if (ByBarCodeFilter != null) 
+            if (ByBarCodeFilter != null)
                 return new List<Product> { ByBarCodeFilter };
 
 
@@ -30,21 +30,21 @@ namespace AlmaceNando.Data.Repositories
 
 
             var ByName = _context.Set<Product>()
-                .Where(x => EF.Functions.Like(x.SearchName , $"%{write}%"));
+                .Where(x => EF.Functions.Like(x.SearchName, $"%{write}%"));
 
             var ByBrand = _context.Set<Product>()
                 .Where(x => EF.Functions.Like(x.Brand, $"%{write}%"));
 
             var ByTag = _context.Set<Product>()
-                .Where(p=> _context.Set<Tag>().Any(x=> x.ProductId == p.Id && EF.Functions.Like(x.tag, $"%{write}%")));
+                .Where(p => _context.Set<Tag>().Any(x => x.ProductId == p.Id && EF.Functions.Like(x.tag, $"%{write}%")));
 
 
-            return await ByKeyword
-                .UnionBy(ByName,p=> p.Id)
-                .UnionBy(ByBrand,p=> p.Id)
-                .UnionBy (ByTag,p=> p.Id)
-                .Take(50)
-                .ToListAsync();
+            var ByEnd = ByKeyword
+                .Union(ByName)
+                .Union(ByBrand)
+                .Union(ByTag);
+
+            return await ByEnd.ToListAsync(ct);
 
             
         
