@@ -5,9 +5,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" 
-             d:DesignHeight="600" d:DesignWidth="1100">
+             d:DesignHeight="600" d:DesignWidth="1100"
+             Focusable="True"
+             PreviewKeyDown="UserControl_PreviewKeyDown"
+             MouseDown="UserControl_MouseDown">
 
-    <Grid>
+    <Grid Background="Transparent">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.8*"/>
             <ColumnDefinition Width="2.5*"/>
@@ -23,10 +26,16 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
+                
+                
+                
                 <Border BorderThickness="0,0,0,1" BorderBrush="{DynamicResource BorderBrush}" Padding="15">
                     <TextBlock Text="Cuentas" FontWeight="Bold" FontSize="14" Foreground="{DynamicResource TextPrimaryBrush}"/>
                 </Border>
-                <ListBox Grid.Row="1" ItemsSource="{Binding Accounts}" BorderThickness="0" Background="Transparent" Padding="8">
+                
+                
+                
+                <ListBox Grid.Row="1"  ItemsSource="{Binding Accounts}" SelectedItem="{Binding SelectAccounts}" BorderThickness="0" Background="Transparent" Padding="8">
                     <ListBox.ItemContainerStyle>
                         <Style TargetType="ListBoxItem">
                             <Setter Property="Template">
@@ -61,27 +70,67 @@
                 <Border Padding="20" Grid.Row="0">
                     <StackPanel>
                         <TextBlock Text="Productos" FontWeight="Bold" FontSize="18" Margin="0,0,0,10" Foreground="#333"/>
-                        <hc:SearchBar Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" 
+                        <hc:SearchBar x:Name="txtSearch" TabIndex="1"
+                                    Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" 
                                      Style="{StaticResource SearchBarPlus}" 
                                      Height="40"/>
                     </StackPanel>
                 </Border>
 
-                <ListBox Grid.Row="1" 
+
+
+                <ListBox x:Name="lstProduct" 
+                         PreviewMouseDown="lstProduct_PreviewMouseDown"
+                         TabIndex="2"
+                         KeyboardNavigation.TabNavigation="Continue"          
+                         Grid.Row="1" 
                          ItemsSource="{Binding Items}" 
-                         SelectedItem="{Binding SelectedProduct}"                         
+                         SelectedItem="{Binding SelectedProduct}"                          
                          BorderThickness="0" 
                          Background="Transparent"
                          Margin="10,0,10,10"
                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                         ScrollViewer.VerticalScrollBarVisibility="Auto">
+                         ScrollViewer.VerticalScrollBarVisibility="Auto"
+                         KeyboardNavigation.DirectionalNavigation="Cycle">      
 
                     <ListBox.ItemContainerStyle>
                         <Style TargetType="ListBoxItem">
+                            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="ListBoxItem">
-                                        <ContentPresenter />
+                                        <Border x:Name="OuterBorder" 
+                            Background="Transparent" 
+                            BorderThickness="0" 
+                            Padding="0">
+
+                                            <Border x:Name="CardBorder" 
+                                Width="135" Height="150" Margin="5" 
+                                Background="White" CornerRadius="12" 
+                                BorderThickness="1.5" BorderBrush="#EEE">
+                                                <ContentPresenter />
+                                            </Border>
+                                        </Border>
+
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="CardBorder" Property="Background" Value="#FAFAFA"/>
+                                                <Setter TargetName="CardBorder" Property="BorderBrush" Value="{DynamicResource PrimaryBrush}"/>
+                                            </Trigger>
+
+                                            <Trigger Property="IsFocused" Value="True">
+                                                <Setter TargetName="CardBorder" Property="Background" Value="#F0F7FF"/>
+                                                <Setter TargetName="CardBorder" Property="BorderBrush" Value="{DynamicResource PrimaryBrush}"/>
+                                                <Setter TargetName="CardBorder" Property="BorderThickness" Value="2.5"/>
+                                            </Trigger>
+
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter TargetName="CardBorder" Property="Background" Value="#E8F5E9"/>
+                                                <Setter TargetName="CardBorder" Property="BorderBrush" Value="#2ecc71"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
                                     </ControlTemplate>
                                 </Setter.Value>
                             </Setter>
@@ -96,36 +145,26 @@
 
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <Border x:Name="CardBorder" Width="135" Height="150" Margin="5" Background="White" 
-                                    CornerRadius="12" BorderThickness="1.5" BorderBrush="#EEE">
-                                <StackPanel VerticalAlignment="Center">
-                                    <TextBlock Text="📦" FontSize="30" HorizontalAlignment="Center"/>
-                                    <TextBlock Text="{Binding Name}" 
-                                               FontWeight="SemiBold" 
-                                               TextAlignment="Center" 
-                                               Margin="5,5,5,0" 
-                                               TextWrapping="Wrap" 
-                                               Foreground="Black"/>
-                                    <TextBlock Text="{Binding Price, StringFormat='${0:N0}'}" 
-                                               Foreground="#2ecc71" 
-                                               HorizontalAlignment="Center" 
-                                               FontWeight="Bold"/>
-                                </StackPanel>
-                            </Border>
-                            <DataTemplate.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter TargetName="CardBorder" Property="BorderBrush" Value="{DynamicResource PrimaryBrush}"/>
-                                    <Setter TargetName="CardBorder" Property="Background" Value="#FAFAFA"/>
-                                </Trigger>
-                                <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" Value="True">
-                                    <Setter TargetName="CardBorder" Property="BorderBrush" Value="{DynamicResource PrimaryBrush}"/>
-                                    <Setter TargetName="CardBorder" Property="BorderThickness" Value="2"/>
-                                    <Setter TargetName="CardBorder" Property="Background" Value="#F0F7FF"/>
-                                </DataTrigger>
-                            </DataTemplate.Triggers>
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="📦" FontSize="30" HorizontalAlignment="Center"/>
+                                <TextBlock Text="{Binding Name}" 
+                           FontWeight="SemiBold" 
+                           TextAlignment="Center" 
+                           Margin="5,5,5,0" 
+                           TextWrapping="Wrap" 
+                           Foreground="Black"/>
+                                <TextBlock Text="{Binding Price, StringFormat='${0:N0}'}" 
+                           Foreground="#2ecc71" 
+                           HorizontalAlignment="Center" 
+                           FontWeight="Bold"/>
+                            </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
+
+
+
+
             </Grid>
         </Border>
 
@@ -147,13 +186,21 @@
                     </DockPanel>
                 </Border>
 
-                <ListView Grid.Row="1" 
-          ItemsSource="{Binding Cart}" 
-          Style="{x:Null}" 
-          Background="Transparent" 
-          BorderThickness="0" 
-          Margin="0,5"
-          ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <ListView x:Name="lstCart" TabIndex="3"
+                          GotFocus="lstCart_GotFocus"
+                          SelectionChanged="lstCart_SelectionChanged"
+                          SelectionMode="Single"
+                          KeyboardNavigation.DirectionalNavigation="Once"
+                          KeyboardNavigation.TabNavigation="Continue"
+                          IsSynchronizedWithCurrentItem="False"
+                          VirtualizingStackPanel.IsVirtualizing="False"
+                          Grid.Row="1" 
+                          ItemsSource="{Binding Cart}" 
+                          Style="{x:Null}" 
+                          Background="Transparent" 
+                          BorderThickness="0" 
+                          Margin="0,5"
+                          ScrollViewer.HorizontalScrollBarVisibility="Disabled">    
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
                             <Setter Property="Template">
@@ -205,6 +252,8 @@
                                 </StackPanel>
 
                                 <hc:NumericUpDown Grid.Column="2" 
+                                                  x:Name="numQty"
+                                                  Focusable="True"
                                   Value="{Binding Quantity}" 
                                   Minimum="1" Maximum="99"
                                   Width="58" Height="25" 

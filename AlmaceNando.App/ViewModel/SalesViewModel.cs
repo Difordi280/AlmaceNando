@@ -60,7 +60,6 @@ namespace AlmaceNando.App.ViewModel
 
             WeakReferenceMessenger.Default.Register<CartTotalMessage>(this,(r,m)=>
             {
-
                 GrandTotal += m.Value;
             });
 
@@ -74,20 +73,28 @@ namespace AlmaceNando.App.ViewModel
             _ = GetProductsAsync(value, _cts.Token);
         }
 
-       
 
-        partial void OnSelectedProductChanging(Product? oldValue, Product? newValue)
+
+        [RelayCommand]
+        public void AddProductToCart(Product? product)
         {
-            if (oldValue != newValue)
+            if (product == null) return;
+            CartItem? i = Cart.FirstOrDefault(p => p.Id == product.Id);
+                
+            if(i == null) 
             {
-                CartItem item = new CartItem(newValue);
-                GrandTotal = GrandTotal + item.Total; 
-
+                CartItem item = new CartItem(product);
+                GrandTotal += item.Total;
                 Cart.Add(item);
+            }
+            else 
+            {
+                i.Quantity++;
             }
         }
 
-       
+
+
         private async Task GetProductsAsync(string write, CancellationToken token = default)
         {
             try
@@ -117,7 +124,7 @@ namespace AlmaceNando.App.ViewModel
         private void RemoveItem(CartItem cart)
         {
             if (cart == null) return;
-
+            GrandTotal -= cart.Total;
             Cart.Remove(cart);
         }
 
@@ -125,19 +132,54 @@ namespace AlmaceNando.App.ViewModel
         [RelayCommand]
         private async Task ProccessSale()
         {
-            var NewSales = Cart.Select(i=> new SalesItem
+
+            string mensaje = "¿Desea confirmar la venta y procesar el pago?";
+            string titulo = "Confirmación de Venta";
+
+            // 2. Lanzamos la ventana emergente con botones Sí/No
+            // El icono 'Question' le da ese toque de "prioridad de confirmación" que buscas
+            MessageBoxResult resultado = MessageBox.Show(mensaje, titulo, MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
+
+            // 3. Evaluamos la decisión del vendedor
+            if (resultado == MessageBoxResult.Yes)
             {
-                Id = i.Id,
-                Quantity= i.Quantity,
-                Price= i.Price,
-
-            }).ToList();
+                try
+                {
 
 
-            await _serviceSales.ProccessSales(GrandTotal,NewSales);
-            
-            Cart.Clear();
-            GrandTotal = 0;
+                    var NewSales = Cart.Select(i => new SalesItem
+                    {
+                        Id = i.Id,
+                        Quantity = i.Quantity,
+                        Price = i.Price,
+
+                    }).ToList();
+
+
+                    await _serviceSales.ProccessSales(GrandTotal, NewSales);
+
+                    Cart.Clear();
+                    GrandTotal = 0;
+
+
+                    MessageBox.Show("Venta realizada con éxito.", "Información", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                    // Aquí podrías limpiar el carrito para una nueva venta
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error al guardar: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+            else
+            {
+                // Si dice que NO, simplemente salimos del método sin hacer nada
+                // El vendedor puede seguir modificando el carrito si quiere
+                return;
+            }
+
+
+          
         }
 
 

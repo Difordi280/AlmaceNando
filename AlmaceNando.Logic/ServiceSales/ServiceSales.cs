@@ -68,7 +68,7 @@ namespace AlmaceNando.Logic.ServiceSales
                 //el codigo y legible
                 SaleDetails = CartItems.Select(item => new SaleDetail
                 {
-                    Id = item.Id,
+                    Id = Guid.NewGuid(),
                     CreatedAt= Time,
                     IsDeleted = false,
                     SyncStatus = false,
