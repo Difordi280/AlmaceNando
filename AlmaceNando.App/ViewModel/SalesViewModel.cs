@@ -1,18 +1,21 @@
-﻿using AlmaceNando.Data.Context;
+﻿using AlmaceNando.App.ModelItem;
+using AlmaceNando.Data.Context;
 using AlmaceNando.Domain.Models.DTOs;
 using AlmaceNando.Domain.Models.Inventory;
 using AlmaceNando.Domain.Repositories;
+using AlmaceNando.Logic.DoTS;
+using AlmaceNando.Logic.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using HandyControl.Controls;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Text;
 using System.Windows;
-using System;
-using AlmaceNando.Logic.Interfaces;
-using AlmaceNando.Logic.DoTS;
+using System.Windows.Threading;
 
 namespace AlmaceNando.App.ViewModel
 {
@@ -29,6 +32,7 @@ namespace AlmaceNando.App.ViewModel
             _cts = new CancellationTokenSource();
 
         }
+        private DispatcherTimer Timer;
 
         private readonly IProductRepository _productRepository;
         
@@ -43,11 +47,16 @@ namespace AlmaceNando.App.ViewModel
         [ObservableProperty]
         private Product? _selectedProduct;
 
-        [ObservableProperty]
-        private decimal _grandTotal = 0;
+       
 
-        public ObservableCollection<CartItem> Cart { get; set; } = new ObservableCollection<CartItem>();
+        [ObservableProperty]
+        public ObservableCollection<AccountDtos> _account = new ObservableCollection<AccountDtos>();
+
+        [ObservableProperty]
+        private AccountDtos? _selectAccounts= new() ;
         public ObservableCollection<Product> Items { get; } = new();
+
+        
 
         public SalesViewModel(IProductRepository productRepository,IServiceSales serviceSales)
         {
@@ -55,37 +64,38 @@ namespace AlmaceNando.App.ViewModel
             _serviceSales = serviceSales;
             ResetToken();
             _ = GetProductsAsync("");
-
-
-
-            WeakReferenceMessenger.Default.Register<CartTotalMessage>(this,(r,m)=>
-            {
-                GrandTotal += m.Value;
-            });
-
+            SetUpTimer();
 
         }
         partial void OnSearchTextChanged(string? value)
         {
             // Cancelamos la tarea anterior de forma segura
             ResetToken();
-
-            _ = GetProductsAsync(value, _cts.Token);
+            _ =
+            GetProductsAsync(value, _cts.Token);
         }
 
 
+        //Para agregar solo el primer producto que esta en la lista de observable
+        [RelayCommand]
+        public void AddFistProduct()
+        {
+             AddProductToCart(Items[0]);
+        }
 
+        //Cuando Presionas enter y el producto esta repetido , solo se lo suma
+        //Si lo esta se agrega con una nueva tarjeta 
         [RelayCommand]
         public void AddProductToCart(Product? product)
         {
             if (product == null) return;
-            CartItem? i = Cart.FirstOrDefault(p => p.Id == product.Id);
+            CartItem? i = SelectAccounts.Cart.FirstOrDefault(p => p.Id == product.Id);
                 
             if(i == null) 
             {
                 CartItem item = new CartItem(product);
-                GrandTotal += item.Total;
-                Cart.Add(item);
+                SelectAccounts.GrandTotal += item.Total;
+                SelectAccounts.Cart.Add(item);
             }
             else 
             {
@@ -93,6 +103,22 @@ namespace AlmaceNando.App.ViewModel
             }
         }
 
+        private void SetUpTimer()
+        {
+            Timer = new DispatcherTimer();
+
+            Timer.Interval = TimeSpan.FromMinutes(2);
+
+            Timer.Tick += (sender, e) =>
+            {
+                foreach(var item in Account )
+                {
+                    item.RefreshTime();
+                    item.UpdateTimeBinding();
+                }
+            };
+            Timer.Start();
+        }
 
 
         private async Task GetProductsAsync(string write, CancellationToken token = default)
@@ -120,13 +146,7 @@ namespace AlmaceNando.App.ViewModel
         }
 
 
-        [RelayCommand]
-        private void RemoveItem(CartItem cart)
-        {
-            if (cart == null) return;
-            GrandTotal -= cart.Total;
-            Cart.Remove(cart);
-        }
+       
 
 
         [RelayCommand]
@@ -138,16 +158,14 @@ namespace AlmaceNando.App.ViewModel
 
             // 2. Lanzamos la ventana emergente con botones Sí/No
             // El icono 'Question' le da ese toque de "prioridad de confirmación" que buscas
-            MessageBoxResult resultado = MessageBox.Show(mensaje, titulo, MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
+            MessageBoxResult resultado = HandyControl.Controls.MessageBox.Show(mensaje, titulo, MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
 
             // 3. Evaluamos la decisión del vendedor
             if (resultado == MessageBoxResult.Yes)
             {
                 try
                 {
-
-
-                    var NewSales = Cart.Select(i => new SalesItem
+                    var NewSales = SelectAccounts.Cart.Select(i => new SalesItem
                     {
                         Id = i.Id,
                         Quantity = i.Quantity,
@@ -156,19 +174,19 @@ namespace AlmaceNando.App.ViewModel
                     }).ToList();
 
 
-                    await _serviceSales.ProccessSales(GrandTotal, NewSales);
+                    await _serviceSales.ProccessSales(SelectAccounts.GrandTotal, NewSales);
 
-                    Cart.Clear();
-                    GrandTotal = 0;
+                    SelectAccounts.Cart.Clear();
+                    SelectAccounts.GrandTotal = 0;
 
 
-                    MessageBox.Show("Venta realizada con éxito.", "Información", MessageBoxButton.OK, MessageBoxImage.Information);
+                    HandyControl.Controls.MessageBox.Show("Venta realizada con éxito.", "Información", MessageBoxButton.OK, MessageBoxImage.Information);
 
                     // Aquí podrías limpiar el carrito para una nueva venta
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Error al guardar: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    HandyControl.Controls.MessageBox.Show($"Error al guardar: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
             else
@@ -177,15 +195,25 @@ namespace AlmaceNando.App.ViewModel
                 // El vendedor puede seguir modificando el carrito si quiere
                 return;
             }
-
-
           
         }
 
+        [RelayCommand]
+        private void AddAccount()
+        {
+            AccountDtos Table = new AccountDtos();
+            Table.NameTable(Account.Count()+1);
+            Account.Add(Table);
+        }
 
 
-
-
+        [RelayCommand]
+        private void RemoveItem(CartItem cart)
+        {
+            if (cart == null) return;
+            SelectAccounts.GrandTotal -= cart.Total;
+            SelectAccounts.Cart.Remove(cart);
+        }
 
 
 

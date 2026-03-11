@@ -26,27 +26,43 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                
-                
-                
-                <Border BorderThickness="0,0,0,1" BorderBrush="{DynamicResource BorderBrush}" Padding="15">
-                    <TextBlock Text="Cuentas" FontWeight="Bold" FontSize="14" Foreground="{DynamicResource TextPrimaryBrush}"/>
+
+                <Border BorderThickness="0,0,0,1" BorderBrush="{DynamicResource BorderBrush}" Padding="15,10">
+                    <Grid>
+                        <TextBlock Text="Cuentas" 
+                           VerticalAlignment="Center"
+                           FontWeight="Bold" 
+                           FontSize="14" 
+                           Foreground="{DynamicResource TextPrimaryBrush}"/>
+
+                        <Button Command="{Binding AddAccountCommand}"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource ButtonPrimary}"
+                        hc:IconElement.Geometry="{StaticResource AddGeometry}"
+                        Content="Agregar"
+                        Height="30"
+                        Padding="10,0"/>
+                    </Grid>
                 </Border>
-                
-                
-                
-                <ListBox Grid.Row="1"  ItemsSource="{Binding Accounts}" SelectedItem="{Binding SelectAccounts}" BorderThickness="0" Background="Transparent" Padding="8">
+
+                <ListBox Grid.Row="1" ItemsSource="{Binding Account}" SelectedItem="{Binding SelectAccounts}" BorderThickness="0" Background="Transparent" Padding="8">
                     <ListBox.ItemContainerStyle>
-                        <Style TargetType="ListBoxItem">
+                        <Style TargetType="ListBoxItem" BasedOn="{StaticResource ListBoxItemBaseStyle}">
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="ListBoxItem">
                                         <Border x:Name="bd" Background="White" CornerRadius="8" BorderThickness="1" BorderBrush="{DynamicResource BorderBrush}" Padding="10" Margin="0,3">
                                             <StackPanel>
-                                                <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="12"/>
-                                                <TextBlock Text="{Binding Total, StringFormat='${0:N0}'}" Foreground="{DynamicResource PrimaryBrush}" FontWeight="Bold"/>
+                                                <TextBlock Text="{Binding Table}" FontWeight="Bold" FontSize="12"/>
+                                                <TextBlock Text="{Binding Time}" Foreground="{DynamicResource PrimaryBrush}" FontWeight="Bold"/>
                                             </StackPanel>
                                         </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter TargetName="bd" Property="BorderBrush" Value="{DynamicResource PrimaryBrush}"/>
+                                                <Setter TargetName="bd" Property="BorderThickness" Value="2"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
                                     </ControlTemplate>
                                 </Setter.Value>
                             </Setter>
@@ -70,10 +86,11 @@
                 <Border Padding="20" Grid.Row="0">
                     <StackPanel>
                         <TextBlock Text="Productos" FontWeight="Bold" FontSize="18" Margin="0,0,0,10" Foreground="#333"/>
-                        <hc:SearchBar x:Name="txtSearch" TabIndex="1"
-                                    Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" 
-                                     Style="{StaticResource SearchBarPlus}" 
-                                     Height="40"/>
+                        <hc:SearchBar x:Name="txtSearch" 
+                            Command="{Binding AddFistProductCommand}"
+                            Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" 
+                            Style="{StaticResource SearchBarPlus}" 
+                            Height="40"/>       
                     </StackPanel>
                 </Border>
 
@@ -195,7 +212,7 @@
                           IsSynchronizedWithCurrentItem="False"
                           VirtualizingStackPanel.IsVirtualizing="False"
                           Grid.Row="1" 
-                          ItemsSource="{Binding Cart}" 
+                          ItemsSource="{Binding SelectAccounts.Cart}" 
                           Style="{x:Null}" 
                           Background="Transparent" 
                           BorderThickness="0" 
@@ -289,7 +306,7 @@
                     <StackPanel>
                         <DockPanel Margin="0,0,0,10">
                             <TextBlock Text="TOTAL" Foreground="Gray" FontWeight="Bold"/>
-                            <TextBlock Text="{Binding GrandTotal, StringFormat='${0:N2}'}" DockPanel.Dock="Right" FontWeight="Black" FontSize="22" Foreground="{DynamicResource PrimaryBrush}"/>
+                            <TextBlock Text="{Binding SelectAccounts.GrandTotal, StringFormat='${0:N2}'}" DockPanel.Dock="Right" FontWeight="Black" FontSize="22" Foreground="{DynamicResource PrimaryBrush}"/>
                         </DockPanel>
                         <Button Content="PAGAR AHORA" Background="{DynamicResource PrimaryBrush}" Command="{Binding ProccessSaleCommand}" Foreground="White" Height="45" FontWeight="Bold" hc:BorderElement.CornerRadius="10" Margin="0,0,0,8"/>
                         <Button Content="Cargar a Deuda" Background="White" Foreground="{DynamicResource SecondaryBrush}" BorderBrush="{DynamicResource SecondaryBrush}" BorderThickness="1" Height="40" hc:BorderElement.CornerRadius="10"/>

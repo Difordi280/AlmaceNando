@@ -116,40 +116,38 @@ namespace AlmaceNando.App.View
 
         private void DeleteCartItem(object element)
         {
-            // 1. Verificamos si el foco está en cualquier parte de la cesta
             if (lstCart.IsKeyboardFocusWithin)
             {
                 object dataToDelete = null;
 
-                // Caso A: El foco está en la fila (ListBoxItem - estado "punteado")
                 if (element is ListBoxItem item)
                 {
                     dataToDelete = item.DataContext;
                 }
-                // Caso B: El foco está en el NumericUpDown o su TextBox interno (estado "seleccionado/editando")
                 else if (element is DependencyObject dep)
                 {
-                    // Buscamos hacia arriba en el árbol visual hasta encontrar el ListBoxItem
                     var parentItem = FindParent<ListBoxItem>(dep);
                     dataToDelete = parentItem?.DataContext;
                 }
 
                 if (dataToDelete != null)
                 {
-                    var viewModel = (dynamic)this.DataContext;
-                    if (viewModel.RemoveItemCommand != null)
+                    // Casteamos al tipo real de tu ViewModel para evitar errores de 'dynamic'
+                    if (this.DataContext is AlmaceNando.App.ViewModel.SalesViewModel viewModel)
                     {
-                        viewModel.RemoveItemCommand.Execute(dataToDelete);
+                        // El Toolkit genera el comando con el sufijo "Command"
+                        if (viewModel.RemoveItemCommand != null)
+                        {
+                            viewModel.RemoveItemCommand.Execute(dataToDelete);
 
-                        // Si después de borrar la cesta queda vacía, volvemos al buscador
-                        if (lstCart.Items.Count == 0)
-                        {
-                            FocusSearch();
-                        }
-                        else
-                        {
-                            // Si quedan items, re-enfocamos la cesta
-                            GoToListItem(lstCart);
+                            if (lstCart.Items.Count == 0)
+                            {
+                                FocusSearch();
+                            }
+                            else
+                            {
+                                GoToListItem(lstCart);
+                            }
                         }
                     }
                 }

@@ -17,7 +17,7 @@ namespace AlmaceNando.Data.Repositories
         public async Task<IEnumerable<Product>> Search(string write, CancellationToken ct)
         {
             var ByBarCodeFilter = await _context.Set<BarCode>()
-                    .Where(x => x.Code == write)
+                    .Where(x => x.Code == write )
                     .Select(b => b.product)
                     .FirstOrDefaultAsync();
 
