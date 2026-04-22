@@ -22,7 +22,16 @@ namespace AlmaceNando.App.View
         public SalesWindow()
         {
             InitializeComponent();
-            this.Loaded += (s, e) => this.Focus();
+
+
+            this.Loaded += (s, e) =>
+            {
+                txtSearch.Focus();
+                if (!string.IsNullOrEmpty(txtSearch.Text))
+                {
+                    txtSearch.SelectAll();
+                }
+            };
         }
 
         private void UserControl_MouseDown(object sender, MouseButtonEventArgs e)
@@ -246,66 +255,38 @@ namespace AlmaceNando.App.View
         }
         #endregion
 
+
         private void ProcessAction(object element, KeyEventArgs e)
         {
-            // 1. Si estamos en el Numeric escribiendo, Enter vuelve al buscador
+            if (element == txtSearch)
+            {
+                if (this.DataContext is AlmaceNando.App.ViewModel.SalesViewModel viewModel)
+                {
+                    if (viewModel.AddFistProductCommand != null)
+                    {
+                        viewModel.AddFistProductCommand.Execute(null);
+                    }
+                }
+
+                // Después de agregar, seleccionamos todo. 
+                // Así, si el siguiente producto es distinto, solo empieza a escribir y lo viejo se borra.
+                txtSearch.SelectAll();
+
+                if (e != null) e.Handled = true;
+                return;
+            }
+
+            // ... El resto del código de ProcessAction se queda igual (Numeric, Cesta, etc.)
             if (element is TextBox tb && (tb.Name == "PART_TextBox" || tb.TemplatedParent is hc.NumericUpDown))
             {
                 FocusSearch();
                 if (e != null) e.Handled = true;
                 return;
             }
-
-            var currentItem = element as ListBoxItem;
-            if (currentItem == null) return;
-
-            // 2. Lógica para la CESTA: Enter selecciona y dispara el foco al Numeric
-            if (lstCart.IsKeyboardFocusWithin)
-            {
-                var item = element as ListBoxItem;
-                if (item != null)
-                {
-                    lstCart.SelectedIndex = -1; // Reset preventivo
-                    lstCart.SelectedItem = item.DataContext; // Esto activa el NumericUpDown
-                    if (e != null) e.Handled = true;
-                    return;
-                }
-            }
-
-            // 3. Lógica para PRODUCTOS: Enter agrega a la cesta
-            var product = currentItem.DataContext as Product;
-            if (lstProduct.IsKeyboardFocusWithin && product != null)
-            {
-                var viewModel = (dynamic)this.DataContext;
-                try
-                {
-                    viewModel.AddProductToCartCommand.Execute(product);
-
-                    // --- NUEVA LÓGICA DE MEMORIA SILENCIOSA ---
-                    // Esperamos un milisegundo a que la UI se actualice con el nuevo ítem
-                    Dispatcher.BeginInvoke(new Action(() =>
-                    {
-                        if (lstCart.Items.Count > 0)
-                        {
-                            // Buscamos el último ítem que entró a la cesta
-                            int lastIndex = lstCart.Items.Count - 1;
-                            var lastContainer = lstCart.ItemContainerGenerator.ContainerFromIndex(lastIndex) as ListBoxItem;
-
-                            if (lastContainer != null)
-                            {
-                                // Guardamos en memoria el último agregado sin quitar el foco del buscador
-                                _lastFocusedCartItem = lastContainer;
-                            }
-                        }
-                    }), System.Windows.Threading.DispatcherPriority.Background);
-                    // ------------------------------------------
-
-                    if (e != null) e.Handled = true;
-                }
-                catch { }
-            }
+            // ... (mantén tus puntos 3 y 4 de este método como los tienes)
         }
-       
+
+
 
         #region Cesta (Salto al Numeric)
         private void lstCart_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -344,10 +325,27 @@ namespace AlmaceNando.App.View
         #endregion
 
         #region Utilidades
+
         private void ProcessLetter(object element)
         {
-            if (element != txtSearch) FocusSearch();
+            if (element != txtSearch)
+            {
+                txtSearch.Focus();
+            }
+
+            // REGLA DE ORO: Si es espacio, siempre al final. No borra.
+            if (Keyboard.IsKeyDown(Key.Space))
+            {
+                txtSearch.SelectionStart = txtSearch.Text.Length;
+                txtSearch.SelectionLength = 0;
+            }
+            else if (element != txtSearch)
+            {
+                // Si es una letra y veníamos de afuera, seleccionamos todo
+                txtSearch.SelectAll();
+            }
         }
+
 
         private void ProcessNumber(object element)
         {
@@ -359,9 +357,22 @@ namespace AlmaceNando.App.View
         private void FocusSearch()
         {
             txtSearch.Focus();
-            txtSearch.SelectionStart = txtSearch.Text.Length;
-        }
 
+            if (!string.IsNullOrEmpty(txtSearch.Text))
+            {
+                // Si el usuario dejó un espacio al final, quiere seguir escribiendo.
+                // Si no hay espacio, seleccionamos todo para que sea fácil cambiar la búsqueda.
+                if (txtSearch.Text.EndsWith(" "))
+                {
+                    txtSearch.SelectionStart = txtSearch.Text.Length;
+                    txtSearch.SelectionLength = 0;
+                }
+                else
+                {
+                    txtSearch.SelectAll();
+                }
+            }
+        }
         private bool IsLetter(Key k) => k >= Key.A && k <= Key.Z || Key.Space == k;
         private bool IsNumber(Key k) => (k >= Key.D0 && k <= Key.D9) || (k >= Key.NumPad0 && k <= Key.NumPad9);
         private bool IsArrow(Key k) => k == Key.Up || k == Key.Down || k == Key.Left || k == Key.Right;

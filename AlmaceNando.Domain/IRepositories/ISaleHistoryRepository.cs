@@ -5,11 +5,9 @@ using System.Text;
 
 namespace AlmaceNando.Domain.IRepositories
 {
-    public interface IServiceSales<T> where T : class
+    public interface ISaleHistoryRepository
     {
-        public Task<IEnumerable<Product>> ProccessSale(decimal Num, IEnumerable<T> CartItems );
-
-
+        public Task<IEnumerable<Sale>> GetHistoryProducts(DateTime Init, DateTime End, Guid IdUser);
 
     }
 }

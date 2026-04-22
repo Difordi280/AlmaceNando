@@ -1,6 +1,7 @@
 ﻿using AlmaceNando.Data.Context;
-using AlmaceNando.Domain.IRepositories;
+using AlmaceNando.Domain.Services;
 using AlmaceNando.Domain.Models.Inventory;
+using AlmaceNando.Domain.Models.People;
 using AlmaceNando.Domain.Repositories;
 using AlmaceNando.Logic.DoTS;
 using AlmaceNando.Logic.Interfaces;
@@ -63,11 +64,12 @@ namespace AlmaceNando.Logic.ServiceSales
                 SyncStatus = false,
 
                 TotalAmount = Num,
-                ClientId = null,
+                
                 //con el Select llenamos todos los datos que nos falta y Dejamos ordenado 
                 //el codigo y legible
                 SaleDetails = CartItems.Select(item => new SaleDetail
                 {
+                    saleId = item.Use.Id,
                     Id = Guid.NewGuid(),
                     CreatedAt= Time,
                     IsDeleted = false,

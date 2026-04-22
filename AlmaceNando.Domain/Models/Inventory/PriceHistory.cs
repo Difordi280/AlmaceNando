@@ -16,7 +16,7 @@ namespace AlmaceNando.Domain.Models.Inventory
         public decimal CostPrice { get; set; }
         //Precio a lo que lo vendi 
         public decimal SalePrice { get; set; }
-
+         
         public DateTime PriceChangeDate { get; set; }
 
    

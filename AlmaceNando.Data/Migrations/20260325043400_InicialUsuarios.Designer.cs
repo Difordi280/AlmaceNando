@@ -3,6 +3,7 @@ using System;
 using AlmaceNando.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AlmaceNando.Data.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    partial class StoreContextModelSnapshot : ModelSnapshot
+    [Migration("20260325043400_InicialUsuarios")]
+    partial class InicialUsuarios
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.3");
@@ -315,7 +318,7 @@ namespace AlmaceNando.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("customers");
+                    b.ToTable("Customer");
                 });
 
             modelBuilder.Entity("AlmaceNando.Domain.Models.People.User", b =>
@@ -353,13 +356,13 @@ namespace AlmaceNando.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("User");
 
                     b.HasData(
                         new
                         {
                             Id = new Guid("d7f965d1-9f9b-4e1b-b461-8f6920f09a56"),
-                            CreatedAt = new DateTime(2026, 3, 25, 0, 15, 41, 944, DateTimeKind.Local).AddTicks(7585),
+                            CreatedAt = new DateTime(2026, 3, 24, 23, 33, 58, 753, DateTimeKind.Local).AddTicks(3877),
                             IsDeleted = false,
                             Name = "Diego Administrador",
                             Password = "123",
@@ -370,7 +373,7 @@ namespace AlmaceNando.Data.Migrations
                         new
                         {
                             Id = new Guid("a3b2c1d0-e4f5-4a3b-8c7d-6e5f4d3c2b1a"),
-                            CreatedAt = new DateTime(2026, 3, 25, 0, 15, 41, 946, DateTimeKind.Local).AddTicks(4111),
+                            CreatedAt = new DateTime(2026, 3, 24, 23, 33, 58, 755, DateTimeKind.Local).AddTicks(3167),
                             IsDeleted = false,
                             Name = "Ana Cajera",
                             Password = "456",
@@ -378,37 +381,6 @@ namespace AlmaceNando.Data.Migrations
                             SyncStatus = false,
                             UserName = "ana"
                         });
-                });
-
-            modelBuilder.Entity("AlmaceNando.Domain.Models.People.UserHistory", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("SyncStatus")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("actionType")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("userHistories");
                 });
 
             modelBuilder.Entity("AlmaceNando.Domain.Models.Inventory.BarCode", b =>
@@ -509,17 +481,6 @@ namespace AlmaceNando.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("product");
-                });
-
-            modelBuilder.Entity("AlmaceNando.Domain.Models.People.UserHistory", b =>
-                {
-                    b.HasOne("AlmaceNando.Domain.Models.People.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("AlmaceNando.Domain.Models.Inventory.Product", b =>

@@ -21,8 +21,8 @@ namespace AlmaceNando.Data.Repositories
                     .Select(b => b.product)
                     .FirstOrDefaultAsync();
 
-            if (ByBarCodeFilter != null)
-                return new List<Product> { ByBarCodeFilter };
+            //if (ByBarCodeFilter != null)
+            //    return new List<Product> { ByBarCodeFilter };
 
 
             var ByKeyword = _context.Set<Product>()

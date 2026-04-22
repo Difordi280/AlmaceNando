@@ -2,7 +2,9 @@
 using AlmaceNando.Data.Context;
 using AlmaceNando.Domain.Models.DTOs;
 using AlmaceNando.Domain.Models.Inventory;
+using AlmaceNando.Domain.Models.People;
 using AlmaceNando.Domain.Repositories;
+using AlmaceNando.Domain.Services;
 using AlmaceNando.Logic.DoTS;
 using AlmaceNando.Logic.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -37,6 +39,9 @@ namespace AlmaceNando.App.ViewModel
         private readonly IProductRepository _productRepository;
         
         private readonly IServiceSales _serviceSales;
+
+        private readonly IServiceLogin _user;
+
         
         private CancellationTokenSource? _cts;
 
@@ -47,8 +52,6 @@ namespace AlmaceNando.App.ViewModel
         [ObservableProperty]
         private Product? _selectedProduct;
 
-       
-
         [ObservableProperty]
         public ObservableCollection<AccountDtos> _account = new ObservableCollection<AccountDtos>();
 
@@ -58,10 +61,11 @@ namespace AlmaceNando.App.ViewModel
 
         
 
-        public SalesViewModel(IProductRepository productRepository,IServiceSales serviceSales)
+        public SalesViewModel(IProductRepository productRepository,IServiceSales serviceSales,IServiceLogin user)
         {
             _productRepository = productRepository;
             _serviceSales = serviceSales;
+            _user = user;
             ResetToken();
             _ = GetProductsAsync("");
             SetUpTimer();
@@ -71,8 +75,7 @@ namespace AlmaceNando.App.ViewModel
         {
             // Cancelamos la tarea anterior de forma segura
             ResetToken();
-            _ =
-            GetProductsAsync(value, _cts.Token);
+            _ = GetProductsAsync(value, _cts.Token);
         }
 
 
@@ -167,6 +170,7 @@ namespace AlmaceNando.App.ViewModel
                 {
                     var NewSales = SelectAccounts.Cart.Select(i => new SalesItem
                     {
+                        Use = _user.CurrentUser,
                         Id = i.Id,
                         Quantity = i.Quantity,
                         Price = i.Price,

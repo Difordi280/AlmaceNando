@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
+using AlmaceNando.Domain.Models.People;
 
 namespace AlmaceNando.App.ViewModel
 {
@@ -13,6 +14,8 @@ namespace AlmaceNando.App.ViewModel
 
         public abstract string ViewName { get;  }
         public abstract int Priority { get; }
+
+        
 
 
     }

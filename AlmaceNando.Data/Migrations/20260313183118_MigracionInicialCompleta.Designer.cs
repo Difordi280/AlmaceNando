@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AlmaceNando.Data.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    [Migration("20260222220753_ResetTotal")]
-    partial class ResetTotal
+    [Migration("20260313183118_MigracionInicialCompleta")]
+    partial class MigracionInicialCompleta
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -39,6 +39,9 @@ namespace AlmaceNando.Data.Migrations
                     b.Property<Guid>("ProductId")
                         .HasColumnType("TEXT");
 
+                    b.Property<bool>("SyncStatus")
+                        .HasColumnType("INTEGER");
+
                     b.Property<DateTime?>("UpdateAt")
                         .HasColumnType("TEXT");
 
@@ -51,21 +54,23 @@ namespace AlmaceNando.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("4bb001ec-24a4-44e4-9894-f9e30003d028"),
+                            Id = new Guid("a9d44eae-0463-4543-bbd7-e9c9b2e8cecc"),
                             Code = "7701001",
-                            CreatedAt = new DateTime(2026, 2, 22, 17, 7, 52, 234, DateTimeKind.Local).AddTicks(2464),
+                            CreatedAt = new DateTime(2026, 3, 13, 13, 31, 17, 740, DateTimeKind.Local).AddTicks(6577),
                             IsDeleted = false,
                             ProductId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            UpdateAt = new DateTime(2026, 2, 22, 17, 7, 52, 234, DateTimeKind.Local).AddTicks(2344)
+                            SyncStatus = false,
+                            UpdateAt = new DateTime(2026, 3, 13, 13, 31, 17, 740, DateTimeKind.Local).AddTicks(6488)
                         },
                         new
                         {
-                            Id = new Guid("680af0c3-9d37-49c4-b8f0-3e8c596f4c59"),
+                            Id = new Guid("8ef06a82-e92a-47e7-a5c9-6da3e76a8f48"),
                             Code = "7701002",
-                            CreatedAt = new DateTime(2026, 2, 22, 17, 7, 52, 234, DateTimeKind.Local).AddTicks(3357),
+                            CreatedAt = new DateTime(2026, 3, 13, 13, 31, 17, 740, DateTimeKind.Local).AddTicks(7317),
                             IsDeleted = false,
                             ProductId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            UpdateAt = new DateTime(2026, 2, 22, 17, 7, 52, 234, DateTimeKind.Local).AddTicks(3354)
+                            SyncStatus = false,
+                            UpdateAt = new DateTime(2026, 3, 13, 13, 31, 17, 740, DateTimeKind.Local).AddTicks(7314)
                         });
                 });
 
@@ -91,6 +96,9 @@ namespace AlmaceNando.Data.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Quantity")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SyncStatus")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
@@ -125,6 +133,9 @@ namespace AlmaceNando.Data.Migrations
 
                     b.Property<decimal>("SalePrice")
                         .HasColumnType("TEXT");
+
+                    b.Property<bool>("SyncStatus")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -171,6 +182,9 @@ namespace AlmaceNando.Data.Migrations
                         .HasColumnType("INTEGER")
                         .HasDefaultValue(0);
 
+                    b.Property<bool>("SyncStatus")
+                        .HasColumnType("INTEGER");
+
                     b.Property<DateTime>("UpdateAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
@@ -188,13 +202,14 @@ namespace AlmaceNando.Data.Migrations
                         {
                             Id = new Guid("11111111-1111-1111-1111-111111111111"),
                             Brand = "Colanta",
-                            CreatedAt = new DateTime(2026, 2, 22, 17, 7, 52, 230, DateTimeKind.Local).AddTicks(7555),
+                            CreatedAt = new DateTime(2026, 3, 13, 13, 31, 17, 740, DateTimeKind.Local).AddTicks(1682),
                             CurrentPrice = 0m,
                             IsDeleted = false,
                             Name = "Leche Colanta 1L",
                             Price = 4200m,
                             SearchName = "leche colanta 1l lacteo nevera",
                             Stock = 20,
+                            SyncStatus = false,
                             UpdateAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             keyword = "101"
                         },
@@ -202,13 +217,14 @@ namespace AlmaceNando.Data.Migrations
                         {
                             Id = new Guid("22222222-2222-2222-2222-222222222222"),
                             Brand = "Postobon",
-                            CreatedAt = new DateTime(2026, 2, 22, 17, 7, 52, 232, DateTimeKind.Local).AddTicks(8426),
+                            CreatedAt = new DateTime(2026, 3, 13, 13, 31, 17, 740, DateTimeKind.Local).AddTicks(3754),
                             CurrentPrice = 0m,
                             IsDeleted = false,
                             Name = "Jugo Hit Mora",
                             Price = 2500m,
                             SearchName = "jugo hit mora bebida nevera",
                             Stock = 15,
+                            SyncStatus = false,
                             UpdateAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             keyword = "102"
                         },
@@ -216,13 +232,14 @@ namespace AlmaceNando.Data.Migrations
                         {
                             Id = new Guid("33333333-3333-3333-3333-333333333333"),
                             Brand = "Diana",
-                            CreatedAt = new DateTime(2026, 2, 22, 17, 7, 52, 232, DateTimeKind.Local).AddTicks(8449),
+                            CreatedAt = new DateTime(2026, 3, 13, 13, 31, 17, 740, DateTimeKind.Local).AddTicks(3760),
                             CurrentPrice = 0m,
                             IsDeleted = false,
                             Name = "Arroz Diana 1kg",
                             Price = 3500m,
                             SearchName = "arroz diana grano",
                             Stock = 50,
+                            SyncStatus = false,
                             UpdateAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             keyword = "201"
                         },
@@ -230,13 +247,14 @@ namespace AlmaceNando.Data.Migrations
                         {
                             Id = new Guid("44444444-4444-4444-4444-444444444444"),
                             Brand = "Premier",
-                            CreatedAt = new DateTime(2026, 2, 22, 17, 7, 52, 232, DateTimeKind.Local).AddTicks(8452),
+                            CreatedAt = new DateTime(2026, 3, 13, 13, 31, 17, 740, DateTimeKind.Local).AddTicks(3762),
                             CurrentPrice = 0m,
                             IsDeleted = false,
                             Name = "Aceite Premier",
                             Price = 12000m,
                             SearchName = "aceite premier cocina",
                             Stock = 10,
+                            SyncStatus = false,
                             UpdateAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             keyword = "202"
                         },
@@ -244,13 +262,14 @@ namespace AlmaceNando.Data.Migrations
                         {
                             Id = new Guid("55555555-5555-5555-5555-555555555555"),
                             Brand = "Van Camps",
-                            CreatedAt = new DateTime(2026, 2, 22, 17, 7, 52, 232, DateTimeKind.Local).AddTicks(8455),
+                            CreatedAt = new DateTime(2026, 3, 13, 13, 31, 17, 740, DateTimeKind.Local).AddTicks(3765),
                             CurrentPrice = 0m,
                             IsDeleted = false,
                             Name = "Atun Van Camps",
                             Price = 6000m,
                             SearchName = "atun van camps conserva",
                             Stock = 30,
+                            SyncStatus = false,
                             UpdateAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             keyword = "301"
                         },
@@ -258,13 +277,14 @@ namespace AlmaceNando.Data.Migrations
                         {
                             Id = new Guid("66666666-6666-6666-6666-666666666666"),
                             Brand = "Rey",
-                            CreatedAt = new DateTime(2026, 2, 22, 17, 7, 52, 232, DateTimeKind.Local).AddTicks(8458),
+                            CreatedAt = new DateTime(2026, 3, 13, 13, 31, 17, 740, DateTimeKind.Local).AddTicks(3767),
                             CurrentPrice = 0m,
                             IsDeleted = false,
                             Name = "Jabon Rey",
                             Price = 2200m,
                             SearchName = "jabon rey aseo",
                             Stock = 40,
+                            SyncStatus = false,
                             UpdateAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             keyword = "401"
                         },
@@ -272,13 +292,14 @@ namespace AlmaceNando.Data.Migrations
                         {
                             Id = new Guid("77777777-7777-7777-7777-777777777777"),
                             Brand = "Sello Rojo",
-                            CreatedAt = new DateTime(2026, 2, 22, 17, 7, 52, 232, DateTimeKind.Local).AddTicks(8461),
+                            CreatedAt = new DateTime(2026, 3, 13, 13, 31, 17, 740, DateTimeKind.Local).AddTicks(3769),
                             CurrentPrice = 0m,
                             IsDeleted = false,
                             Name = "Cafe Sello Rojo",
                             Price = 9000m,
                             SearchName = "cafe sello rojo tinto",
                             Stock = 25,
+                            SyncStatus = false,
                             UpdateAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             keyword = "501"
                         },
@@ -286,13 +307,14 @@ namespace AlmaceNando.Data.Migrations
                         {
                             Id = new Guid("88888888-8888-8888-8888-888888888888"),
                             Brand = "Doria",
-                            CreatedAt = new DateTime(2026, 2, 22, 17, 7, 52, 232, DateTimeKind.Local).AddTicks(8464),
+                            CreatedAt = new DateTime(2026, 3, 13, 13, 31, 17, 740, DateTimeKind.Local).AddTicks(3772),
                             CurrentPrice = 0m,
                             IsDeleted = false,
                             Name = "Pasta Doria",
                             Price = 3000m,
                             SearchName = "pasta doria espagueti",
                             Stock = 35,
+                            SyncStatus = false,
                             UpdateAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             keyword = "601"
                         },
@@ -300,13 +322,14 @@ namespace AlmaceNando.Data.Migrations
                         {
                             Id = new Guid("99999999-9999-9999-9999-999999999999"),
                             Brand = "Refisal",
-                            CreatedAt = new DateTime(2026, 2, 22, 17, 7, 52, 232, DateTimeKind.Local).AddTicks(8467),
+                            CreatedAt = new DateTime(2026, 3, 13, 13, 31, 17, 740, DateTimeKind.Local).AddTicks(3774),
                             CurrentPrice = 0m,
                             IsDeleted = false,
                             Name = "Sal Refisal",
                             Price = 1500m,
                             SearchName = "sal refisal condimento",
                             Stock = 80,
+                            SyncStatus = false,
                             UpdateAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             keyword = "701"
                         },
@@ -314,13 +337,14 @@ namespace AlmaceNando.Data.Migrations
                         {
                             Id = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
                             Brand = "Bimbo",
-                            CreatedAt = new DateTime(2026, 2, 22, 17, 7, 52, 232, DateTimeKind.Local).AddTicks(8470),
+                            CreatedAt = new DateTime(2026, 3, 13, 13, 31, 17, 740, DateTimeKind.Local).AddTicks(3776),
                             CurrentPrice = 0m,
                             IsDeleted = false,
                             Name = "Pan Bimbo",
                             Price = 7500m,
                             SearchName = "pan bimbo tajado",
                             Stock = 12,
+                            SyncStatus = false,
                             UpdateAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             keyword = "801"
                         });
@@ -332,19 +356,29 @@ namespace AlmaceNando.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid?>("ClientId")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<Guid?>("CustomerId")
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("INTEGER");
 
+                    b.Property<bool>("SyncStatus")
+                        .HasColumnType("INTEGER");
+
                     b.Property<decimal>("TotalAmount")
                         .HasColumnType("TEXT");
 
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Sales");
                 });
@@ -362,6 +396,9 @@ namespace AlmaceNando.Data.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("Quantity")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("SyncStatus")
                         .HasColumnType("INTEGER");
 
                     b.Property<decimal>("UnitPrice")
@@ -397,6 +434,9 @@ namespace AlmaceNando.Data.Migrations
                     b.Property<Guid>("ProductId")
                         .HasColumnType("TEXT");
 
+                    b.Property<bool>("SyncStatus")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("tag")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -410,35 +450,140 @@ namespace AlmaceNando.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("78512d64-2c78-4e70-9c2d-3cc6c96c7829"),
-                            CreatedAt = new DateTime(2026, 2, 22, 17, 7, 52, 234, DateTimeKind.Local).AddTicks(135),
+                            Id = new Guid("43a80338-30cb-41e0-8426-04a1a582622e"),
+                            CreatedAt = new DateTime(2026, 3, 13, 13, 31, 17, 740, DateTimeKind.Local).AddTicks(4548),
                             IsDeleted = false,
                             ProductId = new Guid("11111111-1111-1111-1111-111111111111"),
+                            SyncStatus = false,
                             tag = "lacteo"
                         },
                         new
                         {
-                            Id = new Guid("cfced2b9-0c7b-4ff2-b61f-7c41952c7451"),
-                            CreatedAt = new DateTime(2026, 2, 22, 17, 7, 52, 234, DateTimeKind.Local).AddTicks(1047),
+                            Id = new Guid("1a97a1a4-c7e9-4429-9e3a-e6cad6fff504"),
+                            CreatedAt = new DateTime(2026, 3, 13, 13, 31, 17, 740, DateTimeKind.Local).AddTicks(5275),
                             IsDeleted = false,
                             ProductId = new Guid("11111111-1111-1111-1111-111111111111"),
+                            SyncStatus = false,
                             tag = "nevera"
                         },
                         new
                         {
-                            Id = new Guid("d1cb6831-0e92-43fb-9596-a98e5623370d"),
-                            CreatedAt = new DateTime(2026, 2, 22, 17, 7, 52, 234, DateTimeKind.Local).AddTicks(1054),
+                            Id = new Guid("396cac5e-9f37-4681-b0e9-74e28b033412"),
+                            CreatedAt = new DateTime(2026, 3, 13, 13, 31, 17, 740, DateTimeKind.Local).AddTicks(5282),
                             IsDeleted = false,
                             ProductId = new Guid("22222222-2222-2222-2222-222222222222"),
+                            SyncStatus = false,
                             tag = "bebida"
                         },
                         new
                         {
-                            Id = new Guid("a73c3a8c-7c96-44a6-8095-3578f658f3ec"),
-                            CreatedAt = new DateTime(2026, 2, 22, 17, 7, 52, 234, DateTimeKind.Local).AddTicks(1056),
+                            Id = new Guid("8175a70c-dc35-4d4f-b7a0-9e18030b47cb"),
+                            CreatedAt = new DateTime(2026, 3, 13, 13, 31, 17, 740, DateTimeKind.Local).AddTicks(5284),
                             IsDeleted = false,
                             ProductId = new Guid("22222222-2222-2222-2222-222222222222"),
+                            SyncStatus = false,
                             tag = "nevera"
+                        });
+                });
+
+            modelBuilder.Entity("AlmaceNando.Domain.Models.People.Customer", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("CreditLimit")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT")
+                        .HasDefaultValue(50000m);
+
+                    b.Property<decimal>("CurrentDebt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT")
+                        .HasDefaultValue(0m);
+
+                    b.Property<string>("Identification")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("SyncStatus")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Customer");
+                });
+
+            modelBuilder.Entity("AlmaceNando.Domain.Models.People.User", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Identification")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Rol")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT")
+                        .HasDefaultValue("NN");
+
+                    b.Property<bool>("SyncStatus")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("User");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000001"),
+                            CreatedAt = new DateTime(2026, 3, 13, 13, 31, 17, 737, DateTimeKind.Local).AddTicks(749),
+                            IsDeleted = false,
+                            Name = "Vendedor Genérico",
+                            Password = "000",
+                            Rol = "NN",
+                            SyncStatus = false,
+                            UserName = "Isleros0"
                         });
                 });
 
@@ -481,6 +626,23 @@ namespace AlmaceNando.Data.Migrations
                     b.Navigation("product");
                 });
 
+            modelBuilder.Entity("AlmaceNando.Domain.Models.Inventory.Sale", b =>
+                {
+                    b.HasOne("AlmaceNando.Domain.Models.People.Customer", "Customer")
+                        .WithMany("Sales")
+                        .HasForeignKey("CustomerId");
+
+                    b.HasOne("AlmaceNando.Domain.Models.People.User", "User")
+                        .WithMany("Sales")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("AlmaceNando.Domain.Models.Inventory.SaleDetail", b =>
                 {
                     b.HasOne("AlmaceNando.Domain.Models.Inventory.Product", "product")
@@ -519,6 +681,16 @@ namespace AlmaceNando.Data.Migrations
             modelBuilder.Entity("AlmaceNando.Domain.Models.Inventory.Sale", b =>
                 {
                     b.Navigation("SaleDetails");
+                });
+
+            modelBuilder.Entity("AlmaceNando.Domain.Models.People.Customer", b =>
+                {
+                    b.Navigation("Sales");
+                });
+
+            modelBuilder.Entity("AlmaceNando.Domain.Models.People.User", b =>
+                {
+                    b.Navigation("Sales");
                 });
 #pragma warning restore 612, 618
         }

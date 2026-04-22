@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AlmaceNando.Domain.Models.People;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -7,6 +8,7 @@ namespace AlmaceNando.Logic.DoTS
     public class SalesItem
 
     {
+        public User? Use { get; set; }
         public int Quantity { get; set; }
 
         public decimal Price { get; set; }

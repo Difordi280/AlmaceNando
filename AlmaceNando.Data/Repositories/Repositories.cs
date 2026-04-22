@@ -14,7 +14,7 @@ namespace AlmaceNando.Data.Repositories
     public  class Repositories<T> : IRepository<T> where T :  BaseEntity
     {
         
-        private readonly StoreContext _context;
+        protected readonly StoreContext _context;
 
         public Repositories(StoreContext context){ _context = context; }   
 
@@ -36,6 +36,8 @@ namespace AlmaceNando.Data.Repositories
             _context.Set<T>().Update(entity);
             await _context.SaveChangesAsync();
         }
+
+        
 
     }
 }

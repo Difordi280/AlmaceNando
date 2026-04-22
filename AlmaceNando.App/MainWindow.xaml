@@ -26,11 +26,11 @@
 
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                     <Border Background="{DynamicResource SecondaryBrush}" CornerRadius="8" Padding="8,2" Margin="0,0,12,0">
-                        <TextBlock Text="S" FontWeight="ExtraBold" Foreground="White" FontSize="20"/>
+                        <TextBlock Text="A" FontWeight="ExtraBold" Foreground="White" FontSize="20"/>
                     </Border>
                     <StackPanel VerticalAlignment="Center">
                         <TextBlock Text="SISTEMA" Foreground="#A5D6A7" FontWeight="Bold" FontSize="10" />
-                        <TextBlock Text="SUPERMERCADO" Foreground="White" FontWeight="Bold" FontSize="18" LineHeight="18"/>
+                        <TextBlock Text="ALMACENANDO" Foreground="White" FontWeight="Bold" FontSize="18" LineHeight="18"/>
                     </StackPanel>
                 </StackPanel>
 
@@ -40,7 +40,6 @@
                             <StackPanel Orientation="Horizontal"/>
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
-
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <RadioButton 
@@ -52,11 +51,44 @@
                 </ItemsControl>
 
                 <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
-                    <Border Width="35" Height="35" CornerRadius="20" Background="#33FFFFFF">
-                        <TextBlock Text="A" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontWeight="Bold"/>
-                    </Border>
-                </StackPanel>
 
+                    <StackPanel VerticalAlignment="Center" Margin="0,0,12,0" HorizontalAlignment="Right">
+                        <TextBlock Text="{Binding UserNameDisplay, FallbackValue='Invitado'}" 
+                                   Foreground="White" FontWeight="Bold" HorizontalAlignment="Right"/>
+                        <TextBlock Text="{Binding UserRol}" Foreground="#81C784" FontSize="10" HorizontalAlignment="Right"/>
+                    </StackPanel>
+
+                    <Button Command="{Binding HandleAuthActionCommand}" 
+                            Padding="0" BorderThickness="0" Background="Transparent"
+                            hc:BorderElement.CornerRadius="20" Cursor="Hand">
+                        <Button.Content>
+                            <Grid>
+                                <Border Width="40" Height="40" CornerRadius="20" Background="#33FFFFFF">
+                                    <TextBlock Text="{Binding UserInitial, FallbackValue='?'}" 
+                                               HorizontalAlignment="Center" 
+                                               VerticalAlignment="Center" 
+                                               Foreground="White" 
+                                               FontWeight="Bold" 
+                                               FontSize="16"/>
+                                </Border>
+                                <Border Width="12" Height="12" 
+                                        Background="#4CAF50" 
+                                        BorderBrush="{DynamicResource PrimaryDarkBrush}" 
+                                        BorderThickness="2" 
+                                        CornerRadius="6" 
+                                        VerticalAlignment="Bottom" 
+                                        HorizontalAlignment="Right"/>
+                            </Grid>
+                        </Button.Content>
+
+                        <Button.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="{Binding AuthActionText}" 
+                                          Command="{Binding HandleAuthActionCommand}"/>
+                            </ContextMenu>
+                        </Button.ContextMenu>
+                    </Button>
+                </StackPanel>
             </Grid>
         </Border>
 
