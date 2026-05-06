@@ -1,5 +1,6 @@
 ﻿using AlmaceNando.App.View;
 using AlmaceNando.Domain.Models.People;
+using AlmaceNando.Domain.Presentation;
 using AlmaceNando.Domain.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -23,16 +24,20 @@ namespace AlmaceNando.App.ViewModel
 
         public ObservableCollection<ViewModelBase> InjectedModules { get; set; }
 
-        private IServiceProvider _serviceProvider;
+        private readonly IServiceProvider _serviceProvider;
 
         private readonly IServiceLogin _user;
 
+        private readonly IDialogService _dialogService;
 
 
-        public MainViewModel(IEnumerable<ViewModelBase> listviewmodles, IServiceProvider serviceProvider,IServiceLogin user)
+
+        public MainViewModel(IEnumerable<ViewModelBase> listviewmodles, IServiceProvider serviceProvider,IServiceLogin user,IDialogService dialogService)
         {
             _serviceProvider = serviceProvider;
             _user = user;
+
+            _dialogService = dialogService;
 
             var order = listviewmodles
                 .OrderBy(x => x.Priority)
@@ -48,6 +53,8 @@ namespace AlmaceNando.App.ViewModel
         [RelayCommand]
         private void HandleAuthAction()
         {
+            string messenger = " ";
+
             if (_user.IsLoggedIn)
             {
 
@@ -55,7 +62,8 @@ namespace AlmaceNando.App.ViewModel
                 if (logoutWin.ShowDialog() == true)
                 {
                     // Forzamos la notificación de todas las propiedades relacionadas al usuario
-                    NotifyUserChanges();
+                    messenger = "Cuanto dinero quedo en la caja";
+                    _dialogService.RequestAmount(messenger, "prueba",false);
                 }
             }
             else
@@ -63,11 +71,22 @@ namespace AlmaceNando.App.ViewModel
                 var loginWin = _serviceProvider.GetRequiredService<LoginWindow>();
                 if (loginWin.ShowDialog() == true)
                 {
+
+                    messenger = "Cuanto dinero se dejo en la caja";
+                    _dialogService.RequestAmount(messenger, "prueba",false);
                     //// Forzamos la notificación de todas las propiedades relacionadas al usuario
                     //NotifyUserChanges();
                 }
             }
+
+            // aca es para que se coloque cuanto dinero ahi en la caja cuando se abra o cuando se cierre la caja
+
             NotifyUserChanges();
+
+            //!!MODULAR EN UN FUTURO!!
+
+           
+
         }
 
         // Método auxiliar para no repetir código

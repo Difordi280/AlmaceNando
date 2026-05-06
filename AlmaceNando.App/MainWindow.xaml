@@ -51,7 +51,6 @@
                 </ItemsControl>
 
                 <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
-
                     <StackPanel VerticalAlignment="Center" Margin="0,0,12,0" HorizontalAlignment="Right">
                         <TextBlock Text="{Binding UserNameDisplay, FallbackValue='Invitado'}" 
                                    Foreground="White" FontWeight="Bold" HorizontalAlignment="Right"/>
@@ -80,7 +79,6 @@
                                         HorizontalAlignment="Right"/>
                             </Grid>
                         </Button.Content>
-
                         <Button.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Header="{Binding AuthActionText}" 
@@ -93,6 +91,5 @@
         </Border>
 
         <ContentControl Grid.Row="1" Content="{Binding Current}" Margin="20"/>
-
     </Grid>
 </hc:Window>

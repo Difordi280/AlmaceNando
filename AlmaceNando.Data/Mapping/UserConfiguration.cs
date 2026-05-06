@@ -26,8 +26,8 @@ namespace AlmaceNando.Data.Mapping
             builder.HasData(new User
             {
                 Id = Guid.Parse("00000000-0000-0000-0000-000000000001"), // Un ID fijo y fácil de recordar
-                Name = "Isleros0",
-                UserName = "Vendedor Genérico",
+                Name = "Invitado",
+                UserName = "Generico",
                 Password = "000", // Luego le pondremos seguridad, de momento para probar
                 Rol = "NN"
             });

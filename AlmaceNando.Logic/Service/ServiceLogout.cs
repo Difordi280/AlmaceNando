@@ -33,7 +33,7 @@ namespace AlmaceNando.Logic.Service
             if (autheticated == password )
             {
                 // buscamos la ultima apertura
-                UserHistory opening = await _UserR.GetLastOpening( DateTime.Now, _login.CurrentUser.Id);
+                UserHistory opening = await _UserR.GetLastOpening( DateTime.Now, _login.CurrentUser.Id,1);
 
 
                 // buscamos todas las ventas desde ahi en adelante y paramos  en la hora que nos dio el primero metodo

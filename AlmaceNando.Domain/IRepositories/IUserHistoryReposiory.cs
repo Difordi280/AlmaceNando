@@ -9,7 +9,8 @@ namespace AlmaceNando.Domain.IRepositories
     {
         //Consultar ultima apertura 
         //Para asi emparejarlo 
-        public  Task<UserHistory> GetLastOpening(DateTime dateTime , Guid IdUser);
+        //En ocaciones buscare la apertura, y en otras el cierre
+        public  Task<UserHistory?> GetLastOpening(DateTime dateTime , int Action);
        
     }
 }

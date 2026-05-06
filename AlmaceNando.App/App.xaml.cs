@@ -1,9 +1,11 @@
-﻿using AlmaceNando.App.View;
+﻿using AlmaceNando.App.Presentation;
+using AlmaceNando.App.View;
 using AlmaceNando.App.ViewModel;
 using AlmaceNando.Data.Context;
 using AlmaceNando.Data.Repositories;
 using AlmaceNando.Domain.IRepositories;
 using AlmaceNando.Domain.Models.Inventory;
+using AlmaceNando.Domain.Presentation;
 using AlmaceNando.Domain.Repositories;
 using AlmaceNando.Domain.Services;
 using AlmaceNando.Logic.Interfaces;
@@ -40,6 +42,9 @@ namespace AlmaceNando.App
             services.AddTransient<IServiceSales, ServiceSales>();
             services.AddSingleton<IServiceLogin, ServiceLogin>(); 
             services.AddTransient<IServiceLogout, ServiceLogout>();
+
+            // Servicio de vista
+            services.AddTransient<IDialogService, DialogService>();
             
 
 
@@ -49,6 +54,7 @@ namespace AlmaceNando.App
             
             services.AddTransient<LoginWindow>();
             services.AddTransient<LogoutWindow>();  
+
 
 
 
