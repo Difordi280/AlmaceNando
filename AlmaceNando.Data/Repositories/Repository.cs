@@ -11,12 +11,12 @@ using AlmaceNando.Data.Context;
 namespace AlmaceNando.Data.Repositories
 {
     
-    public  class Repositories<T> : IRepository<T> where T :  BaseEntity
+    public  class Repository<T> : IRepository<T> where T :  BaseEntity
     {
         
         protected readonly StoreContext _context;
 
-        public Repositories(StoreContext context){ _context = context; }   
+        public Repository(StoreContext context){ _context = context; }   
 
         public virtual async Task<IEnumerable<T>> GetAllAny()
         {

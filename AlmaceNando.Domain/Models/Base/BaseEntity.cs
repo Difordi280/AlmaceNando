@@ -7,9 +7,9 @@ namespace AlmaceNando.Domain.Models.Base
     public abstract class BaseEntity
     {
         //Direccion Id  natural para cualquier tabla 
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
 
-        
+
 
         //Fecha  de creacion del dato 
         public DateTime CreatedAt { get; set; } = DateTime.Now;

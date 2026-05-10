@@ -9,7 +9,7 @@ using System.Text;
 
 namespace AlmaceNando.Data.Repositories
 {
-    public class UserRepository: Repositories<User>, IUserRepository
+    public class UserRepository: Repository<User>, IUserRepository
     {
         public UserRepository(StoreContext context):base(context) { }
 

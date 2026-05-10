@@ -32,7 +32,7 @@ namespace AlmaceNando.App
 
             // --- 1. CAPA DE DATOS Y LÓGICA (Los cimientos) ---
             services.AddDbContext<StoreContext>();
-            services.AddScoped(typeof(IRepository<>), typeof(Repositories<>));
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserHistoryReposiory,UserHistoryRepository>();
