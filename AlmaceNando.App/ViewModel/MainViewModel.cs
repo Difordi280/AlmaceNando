@@ -26,13 +26,13 @@ namespace AlmaceNando.App.ViewModel
 
         private readonly IServiceProvider _serviceProvider;
 
-        private readonly IServiceLogin _user;
+        private readonly ISessionService _user;
 
         private readonly IDialogService _dialogService;
 
 
 
-        public MainViewModel(IEnumerable<ViewModelBase> listviewmodles, IServiceProvider serviceProvider,IServiceLogin user,IDialogService dialogService)
+        public MainViewModel(IEnumerable<ViewModelBase> listviewmodles, IServiceProvider serviceProvider, ISessionService user,IDialogService dialogService)
         {
             _serviceProvider = serviceProvider;
             _user = user;

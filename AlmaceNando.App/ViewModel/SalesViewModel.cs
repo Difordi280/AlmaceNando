@@ -40,7 +40,7 @@ namespace AlmaceNando.App.ViewModel
         
         private readonly IServiceSales _serviceSales;
 
-        private readonly IServiceLogin _user;
+        private readonly ISessionService _user;
 
         
         private CancellationTokenSource? _cts;
@@ -61,7 +61,7 @@ namespace AlmaceNando.App.ViewModel
 
         
 
-        public SalesViewModel(IProductRepository productRepository,IServiceSales serviceSales,IServiceLogin user)
+        public SalesViewModel(IProductRepository productRepository,IServiceSales serviceSales,ISessionService user)
         {
             _productRepository = productRepository;
             _serviceSales = serviceSales;

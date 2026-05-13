@@ -4,7 +4,7 @@ using System.Text;
 
 namespace AlmaceNando.Domain.Services
 {
-    public interface IUserHistoryService
+    public interface IAuditService
     {
         //CARGO:Informar y recopilar
         //Detalles:No te encargas ni de decidir ni de opinar

@@ -8,10 +8,10 @@ using System.Text;
 
 namespace AlmaceNando.Logic.Service
 {
-    public class UserHistoryService:IUserHistoryService
+    public class UserHistoryService:IAuditService
     {
         //Saber si alguien esta usandolo en este momento
-        private readonly IServiceLogin _login;
+        private readonly ISessionService _login;
 
         // Ayudando hacer y averiguar el estado del usuario
 
@@ -21,7 +21,7 @@ namespace AlmaceNando.Logic.Service
 
         
 
-        public UserHistoryService(IRepository<UserHistory> userHistorySim, IUserHistoryReposiory userHistoryReposiory, IServiceLogin login)
+        public UserHistoryService(IRepository<UserHistory> userHistorySim, IUserHistoryReposiory userHistoryReposiory, ISessionService login)
         {
             _userHistorySim = userHistorySim;
             _userHistoryRepository = userHistoryReposiory;
@@ -30,65 +30,50 @@ namespace AlmaceNando.Logic.Service
         }
 
 
-        //Hace una apertura simple
-        public async Task OpeningCash(decimal? Cash)
+
+        public async Task OpeningCash(decimal? cash)
         {
-            //ingreso de informacion ya dada
-            //entender que registro hacer con el dinero
+            // 1. Configuración inicial
+            DateTime now = DateTime.Now;
+            string description = "";
 
-            //user
-            //Action=1
+            // Siempre buscamos el último cierre (2) para contrastar la apertura
+            int actionToSearch = 2;
 
+            // 2. Traer el último registro de cierre
+            UserHistory? lastClosing = await _userHistoryRepository.GetLastOpening(now, actionToSearch);
+            decimal baseCash = lastClosing?.Cash ?? 0;
 
-            //Cash averiguar 
-            string Description = "";
-            DateTime dateTime = DateTime.Now;
-            UserHistory? closing = new UserHistory();
-            closing = await _userHistoryRepository.GetLastOpening(dateTime, 2);
-
-
-            if (Cash == null)
+            // 3. Lógica de validación de apertura
+            if (cash == null)
             {
-
-                Cash = closing?.Cash ?? 0;
-
-                Description = "Guardado Automatico revisar Caja lo antes posible!!";
-
-
+                cash = baseCash;
+                description = "[Apertura] Guardado automático por ausencia de datos. Revisar.";
             }
-            else if (closing.Cash == Cash)
+            else if (cash == baseCash)
             {
-                Description = "Ingreso exitoso";
+                description = "[Apertura] Exitosa. El monto coincide con el cierre anterior.";
             }
             else
             {
-                Description = $"Faltan ${closing.Cash - Cash} en la caja, porfavor revisar ";
+                decimal diferencia = baseCash - cash.Value;
+                string estado = diferencia > 0 ? "Faltante" : "Sobrante";
+                description = $"[Apertura] Alerta: {estado} de ${Math.Abs(diferencia)}. Se esperaba: ${baseCash}";
             }
 
+            // 4. Crear el registro de apertura (Tipo 1)
             UserHistory opening = new UserHistory
-             {
-                CreatedAt= DateTime.Now,
+            {
+                CreatedAt = now,
                 UserId = _login.CurrentUser.Id,
-                actionType=1,
-                Cash=closing.Cash,
-                Description=Description,
+                actionType = 1, // 1 siempre será Apertura
+                Cash = cash.Value,
+                Description = description
             };
 
-             await _userHistorySim.AddAnsy(opening);
-
-
-            //Descripcion
-
-
+            await _userHistorySim.AddAnsy(opening);
         }
 
-
-        public async Task CloseingCash(decimal Cash)
-        {
-
-
-
-        }
 
 
 

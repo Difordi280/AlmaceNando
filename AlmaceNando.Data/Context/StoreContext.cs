@@ -1,22 +1,14 @@
 ﻿using AlmaceNando.Domain.Models.Inventory;
 using AlmaceNando.Domain.Models.People;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace AlmaceNando.Data.Context
 {
-    public class StoreContext : DbContext 
+    public class StoreContext : DbContext
     {
-
-        public StoreContext(){}
-        public StoreContext(DbContextOptions<StoreContext> options): base(options)
-        {
-
-        }
-
+        public StoreContext() { }
+        public StoreContext(DbContextOptions<StoreContext> options) : base(options) { }
 
         public DbSet<Product> Products { get; set; }
         public DbSet<BarCode> BarCodes { get; set; }
@@ -25,23 +17,35 @@ namespace AlmaceNando.Data.Context
         public DbSet<Sale> Sales { get; set; }
         public DbSet<Tag> tags { get; set; }
         public DbSet<SaleDetail> SaleDetails { get; set; }
-
         public DbSet<User> Users { get; set; }
         public DbSet<Customer> customers { get; set; }
         public DbSet<UserHistory> userHistories { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            // Tu configuración de Sqlite...
-            // En tu StoreContext o donde configures la conexión:
             optionsBuilder.UseSqlite(@"Data Source=C:\Users\USUARIO-SIP\Desktop\Carpeta Diego\AlmaceNando\AlmaceNando.App\AlmaceNando.db");
-
-            // ESTA LÍNEA ES LA MAGIA:
             optionsBuilder.ConfigureWarnings(w => w.Ignore(Microsoft.EntityFrameworkCore.Diagnostics.RelationalEventId.PendingModelChangesWarning));
         }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            // --- OPTIMIZACIÓN Y CONFIGURACIÓN DE USERHISTORY ---
+            modelBuilder.Entity<UserHistory>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+
+                // ÍNDICES: Esto evita que la búsqueda se vuelva lenta con los años
+                entity.HasIndex(e => e.UserId);
+                entity.HasIndex(e => e.CreatedAt);
+                entity.HasIndex(e => e.actionType);
+
+                // Relación obligatoria
+                entity.HasOne(e => e.User)
+                      .WithMany()
+                      .HasForeignKey(e => e.UserId);
+            });
 
             // --- CONFIGURACIÓN DE USER ---
             modelBuilder.Entity<User>(entity =>
@@ -50,9 +54,8 @@ namespace AlmaceNando.Data.Context
                 entity.Property(e => e.UserName).IsRequired().HasMaxLength(50);
                 entity.Property(e => e.Password).IsRequired();
 
-                // Relación: Un Usuario tiene muchas Ventas
                 entity.HasMany(e => e.Sales)
-                      .WithOne() // Ajusta según si Sale tiene propiedad 'User'
+                      .WithOne()
                       .HasForeignKey("UserId");
             });
 
@@ -63,14 +66,18 @@ namespace AlmaceNando.Data.Context
                 entity.Property(e => e.CreditLimit).HasPrecision(18, 2);
                 entity.Property(e => e.CurrentDebt).HasPrecision(18, 2);
 
-                // Relación: Un Cliente tiene muchas Ventas
                 entity.HasMany(e => e.Sales)
                       .WithOne()
                       .HasForeignKey("CustomerId");
             });
 
-            // --- SEED DATA (DATOS PARA PROBAR EL LOGIN) ---
-            // Importante: Los IDs deben ser fijos para el Seed
+            // --- OPTIMIZACIÓN DE VENTAS (Suelen ser las más pesadas) ---
+            modelBuilder.Entity<Sale>(entity =>
+            {
+                entity.HasIndex(e => e.CreatedAt); // Para reportes por fecha rápidos
+            });
+
+            // --- SEED DATA ---
             modelBuilder.Entity<User>().HasData(
                 new User
                 {
@@ -89,11 +96,6 @@ namespace AlmaceNando.Data.Context
                     Rol = "Cajero"
                 }
             );
-
-
-
         }
     }
-    
-    
 }

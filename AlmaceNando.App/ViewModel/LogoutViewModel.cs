@@ -1,4 +1,5 @@
 ﻿using AlmaceNando.Domain.Services;
+using AlmaceNando.Domain.Services.Coordinator;
 using AlmaceNando.Logic.Service;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -11,8 +12,8 @@ namespace AlmaceNando.App.ViewModel
 {
     public partial class LogoutViewModel:ObservableValidator
     {
-        private readonly IServiceLogin _serviceLogin;
-        private readonly IServiceLogout _serviceLogout;
+        private readonly ISessionService _serviceLogin;
+        private readonly IlogoutCoordinator _serviceLogout;
 
         [ObservableProperty]
         private string _physicalCash;
@@ -20,7 +21,7 @@ namespace AlmaceNando.App.ViewModel
         [ObservableProperty]
         private decimal? _systemTotal;
 
-        public LogoutViewModel(IServiceLogin serviceLogin, IServiceLogout serviceLogout)
+        public LogoutViewModel(ISessionService serviceLogin, IlogoutCoordinator serviceLogout)
         {
             _serviceLogin = serviceLogin;
             _serviceLogout = serviceLogout;

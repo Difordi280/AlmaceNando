@@ -5,7 +5,7 @@ using System.Text;
 
 namespace AlmaceNando.Domain.Services
 {
-    public interface IServiceLogin
+    public interface ISessionService
     {
         User? CurrentUser { get;  }
         bool IsLoggedIn { get; }

@@ -3,20 +3,21 @@ using AlmaceNando.Domain.Models.Inventory;
 using AlmaceNando.Domain.Models.People;
 using AlmaceNando.Domain.Repositories;
 using AlmaceNando.Domain.Services;
+using AlmaceNando.Domain.Services.Coordinator;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace AlmaceNando.Logic.Service
 {
-    public class ServiceLogout:IServiceLogout
+    public class ServiceLogout:IlogoutCoordinator
     {
         private readonly ISaleHistoryRepository _HistoryR;
         private readonly IUserHistoryReposiory _UserR;
-        private readonly IServiceLogin _login;
+        private readonly ISessionService _login;
         
         
-        public ServiceLogout(ISaleHistoryRepository History, IUserHistoryReposiory UserR, IServiceLogin login )
+        public ServiceLogout(ISaleHistoryRepository History, IUserHistoryReposiory UserR, ISessionService login )
         {
             _HistoryR = History;
             _UserR = UserR;

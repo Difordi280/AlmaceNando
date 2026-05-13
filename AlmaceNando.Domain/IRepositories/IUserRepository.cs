@@ -8,6 +8,6 @@ namespace AlmaceNando.Domain.IRepositories
 {
     public interface IUserRepository: IRepository<User>
     {
-        public Task<User> GetUserAsync(bool identification,string Name);
+        public Task<User?> GetUserAsync(bool identification,string Name);
     }
 }

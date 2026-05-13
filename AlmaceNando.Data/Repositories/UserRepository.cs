@@ -13,9 +13,9 @@ namespace AlmaceNando.Data.Repositories
     {
         public UserRepository(StoreContext context):base(context) { }
 
-        public async Task<User> GetUserAsync(bool identification, string Name)
+        public async Task<User?> GetUserAsync(bool identification, string Name)
         {
-            User? user = null;
+            User? user = new User();
 
             if (identification)
             {

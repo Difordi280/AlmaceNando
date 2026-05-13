@@ -8,6 +8,7 @@ using AlmaceNando.Domain.Models.Inventory;
 using AlmaceNando.Domain.Presentation;
 using AlmaceNando.Domain.Repositories;
 using AlmaceNando.Domain.Services;
+using AlmaceNando.Domain.Services.Coordinator;
 using AlmaceNando.Logic.Interfaces;
 using AlmaceNando.Logic.Service;
 using AlmaceNando.Logic.ServiceSales;
@@ -40,8 +41,8 @@ namespace AlmaceNando.App
 
             // Servicios de negocio
             services.AddTransient<IServiceSales, ServiceSales>();
-            services.AddSingleton<IServiceLogin, ServiceLogin>(); 
-            services.AddTransient<IServiceLogout, ServiceLogout>();
+            services.AddSingleton<ISessionService, SessionService>(); 
+            services.AddTransient<IlogoutCoordinator, ServiceLogout>();
 
             // Servicio de vista
             services.AddTransient<IDialogService, DialogService>();

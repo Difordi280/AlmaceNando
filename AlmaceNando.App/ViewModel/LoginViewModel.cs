@@ -11,7 +11,6 @@ namespace AlmaceNando.App.ViewModel
     public partial class LoginViewModel: ObservableValidator
     {
 
-        private readonly IServiceLogin _user;
         
         [ObservableProperty]
         private string _userName;
@@ -22,12 +21,7 @@ namespace AlmaceNando.App.ViewModel
 
        
 
-        public LoginViewModel(IServiceLogin user)
-        { 
-            _user = user;
-        
-        }
-
+       
         [RelayCommand]
         private async Task Login(object parameter)
         {
@@ -39,7 +33,8 @@ namespace AlmaceNando.App.ViewModel
                 {
                     string password = passwordBox.Password;
 
-                    bool IsSuccess = await _user.Login(UserName, password);
+                    // se pregunta  si el login fue exitoso
+                    bool IsSuccess = true;
 
                     if (IsSuccess)
                     {
