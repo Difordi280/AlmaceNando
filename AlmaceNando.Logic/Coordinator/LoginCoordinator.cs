@@ -16,14 +16,19 @@ namespace AlmaceNando.Logic.Coordinator
 
         private readonly IAuditService auditService;
 
+        private readonly IFinanceService financeService;
+
+        
+
 
         private User? SaveUser {  get; set; }
 
-        public LoginCoordinator(ISessionService sessionService, IUserRepository userRepository,IAuditService auditService)
+        public LoginCoordinator(ISessionService sessionService, IUserRepository userRepository,IAuditService auditService, IUserHistoryReposiory userHistoryReposiory)
         {
             this.sessionService = sessionService;
             this.userRepository = userRepository;
             this.auditService = auditService;
+            this.userHistoryReposiory = userHistoryReposiory;
         }
 
         public async Task<bool> AutomaticOpening(string username, string password)
@@ -42,8 +47,20 @@ namespace AlmaceNando.Logic.Coordinator
             if (SaveUser == null) return false;
             else
             {
+                //antes de servicio de calculadora, saber cual fue el ultimo cierre y apertura 
 
-                auditService.CloseingCash();
+
+
+
+                decimal? Cash = null;
+                decimal? Debtor = null;
+                //servicio Calculadora
+                //(Cash,Debtor) = financeService.CloseShift()
+                
+
+                // Reporte del servicio auditor
+                //auditService.CloseingCash();
+
             }
             
 

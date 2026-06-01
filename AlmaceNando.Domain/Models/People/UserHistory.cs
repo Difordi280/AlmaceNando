@@ -11,6 +11,10 @@ namespace AlmaceNando.Domain.Models.People
         public Guid UserId { get; set; }
         public virtual User User { get; set; }
 
+
+        /// <summary>
+        /// !!EN UN FUTURO REALIZAR UN ENUM!!
+        /// </summary>
         //1.Apertura 
         //2.Cierre Declarado
         //3.Corte de Sistema 

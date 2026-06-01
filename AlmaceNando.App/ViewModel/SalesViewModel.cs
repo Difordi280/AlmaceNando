@@ -32,7 +32,7 @@ namespace AlmaceNando.App.ViewModel
             _cts?.Cancel();
             _cts?.Dispose();
             _cts = new CancellationTokenSource();
-
+            
         }
         private DispatcherTimer Timer;
 

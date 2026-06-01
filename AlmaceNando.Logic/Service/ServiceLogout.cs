@@ -38,10 +38,10 @@ namespace AlmaceNando.Logic.Service
 
 
                 // buscamos todas las ventas desde ahi en adelante y paramos  en la hora que nos dio el primero metodo
-                var  Sales =  await _HistoryR.GetHistoryProducts(opening.CreatedAt , DateTime.Now, _login.CurrentUser.Id);
+                //var  Sales =  await _HistoryR.GetHistoryProducts(opening.CreatedAt , DateTime.Now, _login.CurrentUser.Id);
 
                 // sumar todos lo precios
-                value = SalesSum(Sales);
+                //value = SalesSum(Sales);
 
                 // vamos  haciendo una lista  de los productos que se vendieron 
             }

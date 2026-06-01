@@ -8,7 +8,7 @@ using System.Text;
 
 namespace AlmaceNando.Logic.Service
 {
-    public class UserHistoryService:IAuditService
+    public class AuditService//:IAuditService
     {
         //Saber si alguien esta usandolo en este momento
         private readonly ISessionService _login;
@@ -21,12 +21,18 @@ namespace AlmaceNando.Logic.Service
 
         
 
-        public UserHistoryService(IRepository<UserHistory> userHistorySim, IUserHistoryReposiory userHistoryReposiory, ISessionService login)
+        public AuditService(IRepository<UserHistory> userHistorySim, IUserHistoryReposiory userHistoryReposiory, ISessionService login)
         {
             _userHistorySim = userHistorySim;
             _userHistoryRepository = userHistoryReposiory;
             _login = login;
 
+        }
+
+
+        public async Task<UserHistory?> SerchHistory(DateTime dateTime, int Action)
+        {
+            return await _userHistoryRepository.GetLastOpening(dateTime, Action);
         }
 
 
